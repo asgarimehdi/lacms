@@ -2,7 +2,6 @@
 
 use App\Models\Category;
 use App\Models\Post;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -47,7 +46,7 @@ new class extends Component {
         }
 
         $this->success($this->post ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
-        $this->redirect(route('posts.index'), navigate: true);
+        $this->redirect(route('admin.posts.index'), navigate: true);
     }
 
     public function with(): array
@@ -56,26 +55,18 @@ new class extends Component {
             'categories' => Category::all()->map(fn($c) => ['id' => $c->id, 'name' => $c->name]),
         ];
     }
-
-    public function render()
-    {
-        return view('livewire.posts-form');
-    }
 }; ?>
 
 <div>
     <x-header :title="$post ? __('cms.edit') : __('cms.create')" separator>
         <x-slot:actions>
-            <x-button :label="__('cms.back')" link="{{ route('posts.index') }}" />
+            <x-button :label="__('cms.back')" link="{{ route('admin.posts.index') }}" />
         </x-slot:actions>
     </x-header>
 
     <x-card shadow>
         <x-form wire:submit="save">
-                            <x-input :label="__('cms.title')" wire:model="title" />
-                <div class="mt-2 text-sm text-gray-500" x-data="{ slug: '' }" x-init="slug = $wire.title ? $wire.title.replace(/\s+/g, '-') : ''" x-on:input.debounce.300ms="$wire.title = $event.target.value; slug = $event.target.value.replace(/\s+/g, '-');">
-                    <span>{{ __('cms.slug_preview') }}:/{{ $wire.title ? Str::slug($wire.title) : '' }}</span>
-                </div>
+            <x-input :label="__('cms.title')" wire:model="title" />
             <x-select :label="__('cms.category')" wire:model="category_id" :options="$categories" placeholder="{{ __('cms.select_category') }}" />
             <div class="mt-4">
                 <label class="label">

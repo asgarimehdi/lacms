@@ -49,7 +49,7 @@ new class extends Component {
             <x-input :placeholder="__('cms.search')" wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
-            <x-button :label="__('cms.create')" link="{{ route('pages.create') }}" responsive icon="o-plus" class="btn-primary" />
+            <x-button :label="__('cms.create')" link="{{ route('admin.pages.create') }}" responsive icon="o-plus" class="btn-primary" />
         </x-slot:actions>
     </x-header>
 

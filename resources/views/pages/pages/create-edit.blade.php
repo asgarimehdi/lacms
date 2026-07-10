@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Page;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -40,28 +39,20 @@ new class extends Component {
         }
 
         $this->success($this->page ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
-        $this->redirect(route('pages.index'), navigate: true);
-    }
-
-    public function render()
-    {
-        return view('livewire.pages-form');
+        $this->redirect(route('admin.pages.index'), navigate: true);
     }
 }; ?>
 
 <div>
     <x-header :title="$page ? __('cms.edit') : __('cms.create')" separator>
         <x-slot:actions>
-            <x-button :label="__('cms.back')" link="{{ route('pages.index') }}" />
+            <x-button :label="__('cms.back')" link="{{ route('admin.pages.index') }}" />
         </x-slot:actions>
     </x-header>
 
     <x-card shadow>
         <x-form wire:submit="save">
             <x-input :label="__('cms.title')" wire:model="title" />
-            <div class="mt-2 text-sm text-gray-500">
-                <span>{{ __('cms.slug_preview') }}:/{{ Str::slug($title) }}</span>
-            </div>
             <div class="mt-4">
                 <label class="label">
                     <span class="label-text">{{ __('cms.content') }}</span>

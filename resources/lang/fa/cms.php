@@ -18,6 +18,7 @@ return [
 
     // Fields
     'title' => 'عنوان',
+    'category_name' => 'نام دسته‌بندی',
     'content' => 'محتوا',
     'category' => 'دسته‌بندی',
     'status' => 'وضعیت',
@@ -36,6 +37,7 @@ return [
     'select_category' => 'انتخاب دسته‌بندی',
     'no_items' => 'موردی یافت نشد.',
     'actions' => 'عملیات',
+    'bulk_delete' => 'حذف انتخاب شده‌ها',
     'last_updated' => 'آخرین به‌روزرسانی',
     'author' => 'نویسنده',
     'slug_preview' => 'پیش‌نمایش slug',

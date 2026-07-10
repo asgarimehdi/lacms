@@ -46,8 +46,15 @@
                     <x-menu-separator />
                 @endif
 
+                {{-- CMS Menu --}}
+                <x-menu-item title="{{ __('cms.dashboard') }}" icon="o-home" link="/admin" />
+                <x-menu-item title="{{ __('cms.posts') }}" icon="o-document" link="/admin/posts" />
+                <x-menu-item title="{{ __('cms.pages') }}" icon="o-document-text" link="/admin/pages" />
+                <x-menu-item title="{{ __('cms.categories') }}" icon="o-folder" link="/admin/categories" />
+                <x-menu-separator />
+
                 <x-menu-item title="Hello" icon="o-sparkles" link="/" />
-                
+
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />

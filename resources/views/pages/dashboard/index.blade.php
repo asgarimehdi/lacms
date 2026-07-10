@@ -9,15 +9,19 @@ use Mary\Traits\Toast;
 new class extends Component {
     use Toast;
 
-    public function stats(): array
+    public $postsCount;
+    public $pagesCount;
+    public $categoriesCount;
+    public $publishedPostsCount;
+    public $draftPostsCount;
+
+    public function mount()
     {
-        return [
-            'posts' => Post::count(),
-            'pages' => Page::count(),
-            'categories' => Category::count(),
-            'published_posts' => Post::where('is_published', true)->count(),
-            'draft_posts' => Post::where('is_published', false)->count(),
-        ];
+        $this->postsCount = Post::count();
+        $this->pagesCount = Page::count();
+        $this->categoriesCount = Category::count();
+        $this->publishedPostsCount = Post::where('is_published', true)->count();
+        $this->draftPostsCount = Post::where('is_published', false)->count();
     }
 }; ?>
 
@@ -29,13 +33,13 @@ new class extends Component {
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-500">{{ __('cms.posts') }}</p>
-                    <p class="text-3xl font-bold">{{ $stats['posts'] }}</p>
+                    <p class="text-3xl font-bold">{{ $postsCount }}</p>
                 </div>
                 <x-icon name="o-document" class="w-10 text-gray-300" />
             </div>
             <div class="mt-2 flex gap-2 text-xs">
-                <span class="badge badge-success">{{ $stats['published_posts'] }} {{ __('cms.published') }}</span>
-                <span class="badge badge-warning">{{ $stats['draft_posts'] }} {{ __('cms.draft') }}</span>
+                <span class="badge badge-success">{{ $publishedPostsCount }} {{ __('cms.published') }}</span>
+                <span class="badge badge-warning">{{ $draftPostsCount }} {{ __('cms.draft') }}</span>
             </div>
         </x-card>
 
@@ -43,7 +47,7 @@ new class extends Component {
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-500">{{ __('cms.pages') }}</p>
-                    <p class="text-3xl font-bold">{{ $stats['pages'] }}</p>
+                    <p class="text-3xl font-bold">{{ $pagesCount }}</p>
                 </div>
                 <x-icon name="o-document-text" class="w-10 text-gray-300" />
             </div>
@@ -54,9 +58,9 @@ new class extends Component {
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm text-gray-500">{{ __('cms.categories') }}</p>
-                    <p class="text-3xl font-bold">{{ $stats['categories'] }}</p>
+                    <p class="text-3xl font-bold">{{ $categoriesCount }}</p>
                 </div>
-                <x-icon name="o-collection" class="w-10 text-gray-300" />
+                <x-icon name="o-folder" class="w-10 text-gray-300" />
             </div>
             <a href="{{ route('admin.categories.index') }}" class="mt-2 text-sm text-primary hover:underline">{{ __('cms.view_all') }}</a>
         </x-card>
