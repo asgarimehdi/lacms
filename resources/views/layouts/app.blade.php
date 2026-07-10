@@ -56,12 +56,13 @@
                 <x-menu-item title="Settings" icon="o-cog-6-tooth" link="/admin/settings" />
                 <x-menu-separator />
 
-                <x-menu-item title="Hello" icon="o-sparkles" link="/" />
+                {{-- Theme Toggle --}}
+                <div class="px-5 py-2 flex items-center justify-between">
+                    <span class="text-xs uppercase opacity-60">Theme</span>
+                    <x-theme-toggle />
+                </div>
 
-                <x-menu-sub title="Settings" icon="o-cog-6-tooth">
-                    <x-menu-item title="Wifi" icon="o-wifi" link="####" />
-                    <x-menu-item title="Archives" icon="o-archive-box" link="####" />
-                </x-menu-sub>
+                <x-menu-item title="Public Site" icon="o-globe-alt" link="/" />
             </x-menu>
         </x-slot:sidebar>
 

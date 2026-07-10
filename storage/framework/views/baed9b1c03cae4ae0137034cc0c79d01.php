@@ -324,6 +324,50 @@
 <?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
 <?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
 <?php endif; ?>
+                <?php if (isset($component)) { $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $attributes; } ?>
+<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Tags','icon' => 'o-tag','link' => '/admin/tags'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('menu-item'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Mary\View\Components\MenuItem::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
+<?php $attributes = $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
+<?php unset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
+<?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
+<?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
+<?php endif; ?>
+                <?php if (isset($component)) { $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $attributes; } ?>
+<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Settings','icon' => 'o-cog-6-tooth','link' => '/admin/settings'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('menu-item'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Mary\View\Components\MenuItem::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
+<?php $attributes = $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
+<?php unset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
+<?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
+<?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
+<?php endif; ?>
                 <?php if (isset($component)) { $__componentOriginal254139bd69d0def79ecb6c40efbc400d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal254139bd69d0def79ecb6c40efbc400d = $attributes; } ?>
 <?php $component = Mary\View\Components\MenuSeparator::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -347,9 +391,36 @@
 <?php unset($__componentOriginal254139bd69d0def79ecb6c40efbc400d); ?>
 <?php endif; ?>
 
+                
+                <div class="px-5 py-2 flex items-center justify-between">
+                    <span class="text-xs uppercase opacity-60">Theme</span>
+                    <?php if (isset($component)) { $__componentOriginal96fdff35e0ddfd31ddf96c499b591184 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal96fdff35e0ddfd31ddf96c499b591184 = $attributes; } ?>
+<?php $component = Mary\View\Components\ThemeToggle::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('theme-toggle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Mary\View\Components\ThemeToggle::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal96fdff35e0ddfd31ddf96c499b591184)): ?>
+<?php $attributes = $__attributesOriginal96fdff35e0ddfd31ddf96c499b591184; ?>
+<?php unset($__attributesOriginal96fdff35e0ddfd31ddf96c499b591184); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal96fdff35e0ddfd31ddf96c499b591184)): ?>
+<?php $component = $__componentOriginal96fdff35e0ddfd31ddf96c499b591184; ?>
+<?php unset($__componentOriginal96fdff35e0ddfd31ddf96c499b591184); ?>
+<?php endif; ?>
+                </div>
+
                 <?php if (isset($component)) { $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $attributes; } ?>
-<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Hello','icon' => 'o-sparkles','link' => '/'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Public Site','icon' => 'o-globe-alt','link' => '/'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('menu-item'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -368,73 +439,6 @@
 <?php if (isset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
 <?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
 <?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
-<?php endif; ?>
-
-                <?php if (isset($component)) { $__componentOriginald82092fa13795886cb51cb7dc7d7b48e = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginald82092fa13795886cb51cb7dc7d7b48e = $attributes; } ?>
-<?php $component = Mary\View\Components\MenuSub::resolve(['title' => 'Settings','icon' => 'o-cog-6-tooth'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('menu-sub'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Mary\View\Components\MenuSub::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-                    <?php if (isset($component)) { $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $attributes; } ?>
-<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Wifi','icon' => 'o-wifi','link' => '####'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('menu-item'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Mary\View\Components\MenuItem::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
-<?php $attributes = $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
-<?php unset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
-<?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
-<?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
-<?php endif; ?>
-                    <?php if (isset($component)) { $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879 = $attributes; } ?>
-<?php $component = Mary\View\Components\MenuItem::resolve(['title' => 'Archives','icon' => 'o-archive-box','link' => '####'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('menu-item'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Mary\View\Components\MenuItem::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
-
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
-<?php $attributes = $__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
-<?php unset($__attributesOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879)): ?>
-<?php $component = $__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879; ?>
-<?php unset($__componentOriginal7c3255ff27a5c6d076ca64dbcfc1f879); ?>
-<?php endif; ?>
-                 <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginald82092fa13795886cb51cb7dc7d7b48e)): ?>
-<?php $attributes = $__attributesOriginald82092fa13795886cb51cb7dc7d7b48e; ?>
-<?php unset($__attributesOriginald82092fa13795886cb51cb7dc7d7b48e); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginald82092fa13795886cb51cb7dc7d7b48e)): ?>
-<?php $component = $__componentOriginald82092fa13795886cb51cb7dc7d7b48e; ?>
-<?php unset($__componentOriginald82092fa13795886cb51cb7dc7d7b48e); ?>
 <?php endif; ?>
              <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
