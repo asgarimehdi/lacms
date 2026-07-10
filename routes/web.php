@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::livewire('/', 'pages::users.index')->name('users.index');
+Route::livewire('/', 'pages::users.index')->name('users.index')->middleware('auth');
 
 // CMS Routes — protected by auth middleware
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
