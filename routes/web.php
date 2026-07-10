@@ -16,4 +16,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::livewire('/categories', 'pages::categories.index')->name('categories.index');
     Route::livewire('/categories/create', 'pages::categories.create-edit')->name('categories.create');
     Route::livewire('/categories/{category}/edit', 'pages::categories.create-edit')->name('categories.edit');
+
+    // Tags
+    Route::livewire('/tags', 'pages::tags.index')->name('tags.index');
+    Route::livewire('/tags/create', 'pages::tags.create-edit')->name('tags.create');
+    Route::livewire('/tags/{tag}/edit', 'pages::tags.create-edit')->name('tags.edit');
+
+    // Settings
+    Route::livewire('/settings', 'pages::settings.index')->name('settings');
 });

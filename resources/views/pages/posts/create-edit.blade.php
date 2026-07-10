@@ -2,6 +2,8 @@
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use Mary\Traits\Toast;
 
@@ -13,6 +15,7 @@ new class extends Component {
     public string $content = '';
     public ?int $category_id = null;
     public bool $is_published = false;
+    public array $tag_ids = [];
 
     protected function rules(): array
     {
@@ -32,6 +35,7 @@ new class extends Component {
             $this->content = $post->content;
             $this->category_id = $post->category_id;
             $this->is_published = $post->is_published;
+            $this->tag_ids = $post->tags->pluck('id')->all();
         }
     }
 
@@ -41,8 +45,11 @@ new class extends Component {
 
         if ($this->post) {
             $this->post->update($data);
+            $this->post->tags()->sync($this->tag_ids);
         } else {
-            Post::create($data);
+            $data['user_id'] = auth()->id();
+            $post = Post::create($data);
+            $post->tags()->sync($this->tag_ids);
         }
 
         $this->success($this->post ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
@@ -53,31 +60,34 @@ new class extends Component {
     {
         return [
             'categories' => Category::all()->map(fn($c) => ['id' => $c->id, 'name' => $c->name]),
+            'tags' => Tag::all()->map(fn($t) => ['id' => $t->id, 'name' => $t->name]),
         ];
     }
 }; ?>
 
 <div>
-    <x-header :title="$post ? __('cms.edit') : __('cms.create')" separator>
+    <x-header title="{{ $post ? __('cms.edit') : __('cms.create') }} {{ __('cms.posts') }}" separator>
         <x-slot:actions>
-            <x-button :label="__('cms.back')" link="{{ route('admin.posts.index') }}" />
+            <x-button label="{{ __('cms.back') }}" link="/admin/posts" />
         </x-slot:actions>
     </x-header>
 
     <x-card shadow>
         <x-form wire:submit="save">
-            <x-input :label="__('cms.title')" wire:model="title" />
-            <x-select :label="__('cms.category')" wire:model="category_id" :options="$categories" placeholder="{{ __('cms.select_category') }}" />
+            <x-input label="{{ __('cms.title') }}" wire:model="title" />
+            <x-select label="{{ __('cms.category') }}" wire:model="category_id" :options="$categories" placeholder="{{ __('cms.select_category') }}" />
+            <x-choices-offline label="Tags" wire:model="tag_ids" :options="$tags" searchable />
+
             <div class="mt-4">
-                <label class="label">
-                    <span class="label-text">{{ __('cms.content') }}</span>
-                </label>
+                <label class="label"><span class="label-text">{{ __('cms.content') }}</span></label>
                 <input type="hidden" wire:model="content" />
                 <trix-editor x-data="{ initialized: false }" x-on:trix-initialize="initialized = true" x-on:trix-change="$wire.content = $event.target.value" wire:ignore input="content" class="min-h-[300px] prose prose-sm max-w-none"></trix-editor>
             </div>
-            <x-checkbox :label="__('cms.published')" wire:model="is_published" class="mt-4" />
+
+            <x-checkbox label="{{ __('cms.published') }}" wire:model="is_published" class="mt-4" />
+
             <x-slot:actions>
-                <x-button :label="__('cms.save')" type="submit" icon="o-check" class="btn-primary" spinner="save" />
+                <x-button label="{{ __('cms.save') }}" type="submit" icon="o-check" class="btn-primary" spinner="save" />
             </x-slot:actions>
         </x-form>
     </x-card>

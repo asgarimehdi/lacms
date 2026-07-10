@@ -52,6 +52,8 @@
                 <x-menu-item title="{{ __('cms.posts') }}" icon="o-document" link="/admin/posts" />
                 <x-menu-item title="{{ __('cms.pages') }}" icon="o-document-text" link="/admin/pages" />
                 <x-menu-item title="{{ __('cms.categories') }}" icon="o-folder" link="/admin/categories" />
+                <x-menu-item title="Tags" icon="o-tag" link="/admin/tags" />
+                <x-menu-item title="Settings" icon="o-cog-6-tooth" link="/admin/settings" />
                 <x-menu-separator />
 
                 <x-menu-item title="Hello" icon="o-sparkles" link="/" />
