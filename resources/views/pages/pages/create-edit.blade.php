@@ -39,7 +39,7 @@ new class extends Component {
         }
 
         $this->success($this->page ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
-        $this->redirect(route('admin.pages.index'), navigate: true);
+        $this->redirect('/admin/pages');
     }
 }; ?>
 

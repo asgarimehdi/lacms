@@ -1,0 +1,92 @@
+
+
+ Setup 
+
+ Requirements 
+
+ Make sure you a have a fresh Laravel 12+ project up and running on your browser, without any starter kit .
+ Yes, you can use maryUI with Jetstream/Breeze on your own projects, but let's keep things simple for now and start from the ground.
+
+Fresh Laravel 12+ project up and running. 
+
+No starter kit. 
+
+SQLite database. 
+
+ laravel new myapp
+
+ Before proceeding, make a local commit to keep track of what is going on. 
+
+ Install maryUI 
+
+ composer require robsontenorio/mary
+
+ php artisan mary:install
+
+ Start the dev server.
+
+ yarn dev
+
+ Check the browser! 
+
+ We are using Livewire single file components, take a look at:
+
+ routes/web.php 
+
+ resources/views/pages/users/index.blade.php . 
+
+ Check the source code diff and commit it. 
+
+ Improving the example 
+
+ You have a basic working example, but the data is hardcoded .
+ Let's make it work with a real database and add some new models and relationships.
+
+ Creating models has nothing to do with maryUI. So, we have created a command to do it for you and speed things up.
+ After running it, it is important to take a look at the database to see what is going on.
+
+ php artisan mary:bootcamp
+
+Create a new Country model. 
+
+Create a new Language model. 
+
+Create a User belongs to Country relationship. 
+
+Create a User many-to-many Language relationship. 
+
+Create their respective migrations/factories/seeders. 
+
+Randomly seed the database with users, countries, languages and its relationships. 
+
+ If you hit the browser again, of course, nothing has changed . On the next topic we will work on that component.
+
+ Before proceeding, make a local commit to keep track of what is going on. 
+
+ Listing users
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+

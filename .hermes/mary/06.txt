@@ -1,0 +1,350 @@
+
+
+ Authentication 
+
+ Let's see how easy it is to implement authentication and registration features from the ground in no time, without any starter kits. 
+
+Routes 
+
+Template 
+
+Login 
+
+Registration 
+
+ Routes 
+
+ Here is what routes/web.php looks like with authentication.
+
+Login route. 
+
+Logout route. 
+
+Protect some routes. 
+
+ Go ahead and copy/paste this.
+
+ // Users will be redirected to this route if not logged in
+
+ Route :: livewire ( ' /login ' , ' pages::login ' ) -&gt; name ( ' login ' ) ; 
+
+ // Define the logout
+
+ Route :: get ( ' /logout ' , function ( ) { 
+
+ auth ( ) -&gt; logout ( ) ; 
+
+ request ( ) -&gt; session ( ) -&gt; invalidate ( ) ; 
+
+ request ( ) -&gt; session ( ) -&gt; regenerateToken ( ) ; 
+
+ return redirect ( ' / ' ) ; 
+
+ } ) ; 
+
+ // Protected routes here
+
+ Route :: middleware ( ' auth ' ) -&gt; group ( function ( ) { 
+
+ Route :: livewire ( ' / ' , ' pages::index ' ) ; 
+
+ Route :: livewire ( ' /users ' , ' pages::users.index ' ) ; 
+
+ Route :: livewire ( ' /users/create ' , ' pages::users.create ' ) ; 
+
+ Route :: livewire ( ' /users/{user}/edit ' , ' pages::users.edit ' ) ; 
+
+ // ... more
+
+ } ) ; 
+
+ Template 
+
+ Create an new layout at resources/views/layouts/empty.blade.php . We are going to use this layout for the login and registration pages.
+
+ &lt;! DOCTYPE html &gt; 
+
+ &lt; html lang = &quot; {{ str_replace ( ' _ ' , ' - ' , app ( ) -&gt; getLocale ( ) ) }} &quot; &gt; 
+
+ &lt; head &gt; 
+
+ &lt; meta charset = &quot; utf-8 &quot; &gt; 
+
+ &lt; meta name = &quot; viewport &quot; content = &quot; width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover &quot; &gt; 
+
+ &lt; meta name = &quot; csrf-token &quot; content = &quot; {{ csrf_token ( ) }} &quot; &gt; 
+
+ @vite ( [ ' resources/css/app.css ' , ' resources/js/app.js ' ] ) 
+
+ &lt;/ head &gt; 
+
+ &lt; body class = &quot; min-h-screen font-sans antialiased bg-base-200 &quot; &gt; 
+
+ {{-- You could elaborate the layout here --}} 
+
+ {{-- The important part is to have a different layout from the main app layout --}} 
+
+ &lt; x-main full-width &gt; 
+
+ &lt; x-slot:content &gt; 
+
+ {{ $ slot }} 
+
+ &lt;/ x-slot:content &gt; 
+
+ &lt;/ x-main &gt; 
+
+ &lt;/ body &gt; 
+
+ &lt;/ html &gt; 
+
+ Login page 
+
+ Create the login component.
+
+ php artisan livewire:make pages::login
+
+ use Livewire \ Attributes \ Layout ; 
+
+ use Livewire \ Attributes \ Rule ; 
+
+ use Livewire \ Attributes \ Title ; 
+
+ use Livewire \ Component ; 
+
+ new 
+
+ #[ Layout ( ' layouts.empty ' ) ] 
+ #[ Title ( ' Login ' ) ] 
+
+ class extends Component { 
+
+ #[ Rule ( ' required|email ' ) ] 
+
+ public string $ email = ' ' ; 
+
+ #[ Rule ( ' required ' ) ] 
+
+ public string $ password = ' ' ; 
+
+ public function mount ( ) 
+
+ { 
+
+ // It is logged in
+
+ if ( auth ( ) -&gt; user ( ) ) { 
+
+ return redirect ( ' / ' ) ; 
+
+ } 
+
+ } 
+
+ public function login ( ) 
+
+ { 
+
+ $ credentials = $ this -&gt; validate ( ) ; 
+
+ if ( auth ( ) -&gt; attempt ( $ credentials ) ) { 
+
+ request ( ) -&gt; session ( ) -&gt; regenerate ( ) ; 
+
+ return redirect ( ) -&gt; intended ( ' / ' ) ; 
+
+ } 
+
+ $ this -&gt; addError ( ' email ' , ' The provided credentials do not match our records. ' ) ; 
+
+ } 
+
+ } 
+
+ &lt; div class = &quot; md:w-96 mx-auto mt-20 &quot; &gt; 
+
+ &lt; div class = &quot; mb-10 &quot; &gt; 
+
+ &lt; x-app-brand /&gt; 
+
+ &lt;/ div &gt; 
+
+ &lt; x-form wire:submit = &quot; login &quot; &gt; 
+
+ &lt; x-input placeholder = &quot; E-mail &quot; wire:model = &quot; email &quot; icon = &quot; o-envelope &quot; /&gt; 
+
+ &lt; x-input placeholder = &quot; Password &quot; wire:model = &quot; password &quot; type = &quot; password &quot; icon = &quot; o-key &quot; /&gt; 
+
+ &lt; x-slot:actions &gt; 
+
+ &lt; x-button label = &quot; Create an account &quot; class = &quot; btn-ghost &quot; link = &quot; /register &quot; /&gt; 
+
+ &lt; x-button label = &quot; Login &quot; type = &quot; submit &quot; icon = &quot; o-paper-airplane &quot; class = &quot; btn-primary &quot; spinner = &quot; login &quot; /&gt; 
+
+ &lt;/ x-slot:actions &gt; 
+
+ &lt;/ x-form &gt; 
+
+ &lt;/ div &gt; 
+
+ That is it! 
+
+ Try to navigate to a protected route, and you will be redirected to the login page.
+ The default app layout shipped with maryUI shows the authenticated user and logout button for you.
+
+ Registration page 
+
+ Add this public route to web.php .
+
+ // Public routes
+
+ Route :: livewire ( ' /register ' , ' pages::register ' ) ; 
+
+ // Protected routes here
+
+ Route :: middleware ( ' auth ' ) -&gt; group ( function ( ) { 
+
+ // ...
+
+ } ) ; 
+
+ Create the registration form.
+
+ php artisan livewire:make pages::register
+
+ use App \ Models \ User ; 
+
+ use Livewire \ Attributes \ Layout ; 
+
+ use Livewire \ Attributes \ Rule ; 
+
+ use Livewire \ Attributes \ Title ; 
+
+ use Livewire \ Component ; 
+
+ use Illuminate \ Support \ Facades \ Hash ; 
+
+ new 
+
+ #[ Layout ( ' layouts.empty ' ) ] 
+ #[ Title ( ' Registration ' ) ] 
+
+ class extends Component { 
+
+ #[ Rule ( ' required ' ) ] 
+
+ public string $ name = ' ' ; 
+
+ #[ Rule ( ' required|email|unique:users ' ) ] 
+
+ public string $ email = ' ' ; 
+
+ #[ Rule ( ' required|confirmed ' ) ] 
+
+ public string $ password = ' ' ; 
+
+ #[ Rule ( ' required ' ) ] 
+
+ public string $ password_confirmation = ' ' ; 
+
+ public function mount ( ) 
+
+ { 
+
+ // It is logged in
+
+ if ( auth ( ) -&gt; user ( ) ) { 
+
+ return redirect ( ' / ' ) ; 
+
+ } 
+
+ } 
+
+ public function register ( ) 
+
+ { 
+
+ $ data = $ this -&gt; validate ( ) ; 
+
+ $ data [ ' avatar ' ] = ' /empty-user.jpg ' ; 
+
+ $ data [ ' password ' ] = Hash :: make ( $ data [ ' password ' ] ) ; 
+
+ $ user = User :: create ( $ data ) ; 
+
+ auth ( ) -&gt; login ( $ user ) ; 
+
+ request ( ) -&gt; session ( ) -&gt; regenerate ( ) ; 
+
+ return redirect ( ' / ' ) ; 
+
+ } 
+
+ } 
+
+ &lt; div class = &quot; md:w-96 mx-auto mt-20 &quot; &gt; 
+
+ &lt; div class = &quot; mb-10 &quot; &gt; 
+
+ &lt; x-app-brand /&gt; 
+
+ &lt;/ div &gt; 
+
+ &lt; x-form wire:submit = &quot; register &quot; &gt; 
+
+ &lt; x-input placeholder = &quot; Name &quot; wire:model = &quot; name &quot; icon = &quot; o-user &quot; /&gt; 
+
+ &lt; x-input placeholder = &quot; E-mail &quot; wire:model = &quot; email &quot; icon = &quot; o-envelope &quot; /&gt; 
+
+ &lt; x-input placeholder = &quot; Password &quot; wire:model = &quot; password &quot; type = &quot; password &quot; icon = &quot; o-key &quot; /&gt; 
+
+ &lt; x-input placeholder = &quot; Confirm Password &quot; wire:model = &quot; password_confirmation &quot; type = &quot; password &quot; icon = &quot; o-key &quot; /&gt; 
+
+ &lt; x-slot:actions &gt; 
+
+ &lt; x-button label = &quot; Already registered? &quot; class = &quot; btn-ghost &quot; link = &quot; /login &quot; /&gt; 
+
+ &lt; x-button label = &quot; Register &quot; type = &quot; submit &quot; icon = &quot; o-paper-airplane &quot; class = &quot; btn-primary &quot; spinner = &quot; register &quot; /&gt; 
+
+ &lt;/ x-slot:actions &gt; 
+
+ &lt;/ x-form &gt; 
+
+ &lt;/ div &gt; 
+
+ It is done! 
+
+ Hit the /register route on browser and create an account.
+
+ As you are logged in, file uploads will work in the HTML Editor component 
+
+ Spotlight
+
+ A wrap
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+

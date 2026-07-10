@@ -1,0 +1,44 @@
+
+
+ A wrap 
+
+ We could expand this Bootcamp forever by adding more and more cool features, but we are done for now.
+
+ Take a look at docs and see by yourself on how much you can do with less code.
+ Every component has been carefully handcrafted to provide an extreme DX/UX/UI.
+
+ Also check the maryUI demos and get amazed by how much great stuff you can do.
+ Each demo contains real world code and straight approaches to get the most out of maryUI and Livewire.
+
+ If you are enjoying maryUI give it a star on GitHub
+ and sponsor it .
+
+ See you on Twitter! 
+
+ Authentication
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+

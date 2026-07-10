@@ -36,7 +36,7 @@ new class extends Component {
         }
 
         $this->success($this->category ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
-        $this->redirect(route('admin.categories.index'), navigate: true);
+        $this->redirect('/admin/categories');
     }
 }; ?>
 

@@ -40,4 +40,19 @@ return [
     // Admin
     'dashboard' => 'Dashboard',
     'admin' => 'Admin',
+    'last_updated' => 'Last Updated',
+    'author' => 'Author',
+    'view_all' => 'View All',
+    'new_post' => 'New Post',
+    'new_page' => 'New Page',
+    'new_category' => 'New Category',
+    'quick_actions' => 'Quick Actions',
+    'recent_posts' => 'Recent Posts',
+    'recent_pages' => 'Recent Pages',
+    'bulk_delete' => 'Bulk Delete',
+
+    // Auth
+    'sign_in_to_continue' => 'Sign in to your CMS.',
+    'create_your_account' => 'Create your account.',
+    'not_published' => 'Not Published',
 ];

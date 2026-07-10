@@ -46,7 +46,7 @@ new class extends Component {
         }
 
         $this->success($this->post ? __('cms.updated') : __('cms.created'), position: 'toast-bottom');
-        $this->redirect(route('admin.posts.index'), navigate: true);
+        $this->redirect('/admin/posts');
     }
 
     public function with(): array

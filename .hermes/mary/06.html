@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="csrf-token" content="2VqqIGZUuMRPaF2e7txUA9FJ6Is1HQ4syP9lnbtn">
+    <title>maryUI Bootcamp - Authentication</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://mary-ui.com/favicon.ico">
+    <link rel="mask-icon" href="https://mary-ui.com/favicon.ico" color="#ff2d20">
+
+    
+    <meta name="description" content="Move faster, code less. Get the job done.">
+
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mary-ui.com/">
+    <meta property="og:title" content="maryUI">
+    <meta property="og:description" content="Gorgeous UI components for Livewire powered by daisyUI and Tailwind.">
+    <meta property="og:image" content="https://mary-ui.com/mary-banner.png?new=2025-03-14">
+
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mary-ui.com/">
+    <meta property="twitter:title" content="maryUI">
+    <meta property="twitter:description" content="Gorgeous UI components for Livewire powered by daisyUI and Tailwind.">
+    <meta property="twitter:image" content="https://mary-ui.com/mary-banner.png?new=2025-03-14">
+
+    <link rel="preload" as="style" href="https://mary-ui.com/build/assets/app-CNOLfzPq.css" /><link rel="modulepreload" as="script" href="https://mary-ui.com/build/assets/app-vxQCC_7c.js" /><link rel="stylesheet" href="https://mary-ui.com/build/assets/app-CNOLfzPq.css" data-navigate-track="reload" /><script type="module" src="https://mary-ui.com/build/assets/app-vxQCC_7c.js" data-navigate-track="reload"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+    <link rel="preconnect" href="https://0AWOCS02I6-dsn.algolia.net" crossorigin />
+
+    
+    <script defer src="https://analytics.robsontenorio.com/script.js" data-website-id="9dac1324-beb1-49e3-8a3f-8528fdc91df3"></script>
+
+    <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-NDC4ZLZ6D2"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', 'G-NDC4ZLZ6D2');
+        </script>
+    <!-- Livewire Styles --><style >[wire\:loading][wire\:loading], [wire\:loading\.delay][wire\:loading\.delay], [wire\:loading\.list-item][wire\:loading\.list-item], [wire\:loading\.inline-block][wire\:loading\.inline-block], [wire\:loading\.inline][wire\:loading\.inline], [wire\:loading\.block][wire\:loading\.block], [wire\:loading\.flex][wire\:loading\.flex], [wire\:loading\.table][wire\:loading\.table], [wire\:loading\.grid][wire\:loading\.grid], [wire\:loading\.inline-flex][wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.none][wire\:loading\.delay\.none], [wire\:loading\.delay\.shortest][wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter][wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short][wire\:loading\.delay\.short], [wire\:loading\.delay\.default][wire\:loading\.delay\.default], [wire\:loading\.delay\.long][wire\:loading\.delay\.long], [wire\:loading\.delay\.longer][wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest][wire\:loading\.delay\.longest] {display: none;}[wire\:offline][wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}:root {--livewire-progress-bar-color: #2299dd;}[x-cloak] {display: none !important;}[wire\:cloak] {display: none !important;}dialog#livewire-error::backdrop {background-color: rgba(0, 0, 0, .6);}</style>
+</head>
+
+<body class="min-h-screen font-sans antialiased">
+    
+    
+    
+    
+    
+    <div class="bg-base-100 border-base-content/10 border-b-[length:var(--border)] sticky top-0 z-10">
+        <div class="flex items-center px-6 py-3 max-w-screen-2xl mx-auto">
+            <div class="flex-1 flex items-center">
+                <label for="main-drawer" class="lg:hidden mr-3">
+                <svg class="inline flex-shrink-0 w-5 h-5 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+</svg>
+                </label>
+
+            <a href="/" wire:navigate>
+                <div class="flex items-center gap-1">
+        <div class="font-black text-2xl underline decoration-pink-400  decoration-[0.15rem]">maryUI</div>
+        <div>
+            <svg class="inline flex-shrink-0 w-6 h-6 text-pink-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M378.9 80c-27.3 0-53 13.1-69 35.2l-34.4 47.6c-4.5 6.2-11.7 9.9-19.4 9.9s-14.9-3.7-19.4-9.9l-34.4-47.6c-16-22.1-41.7-35.2-69-35.2-47 0-85.1 38.1-85.1 85.1 0 49.9 32 98.4 68.1 142.3 41.1 50 91.4 94 125.9 120.3 3.2 2.4 7.9 4.2 14 4.2s10.8-1.8 14-4.2c34.5-26.3 84.8-70.4 125.9-120.3 36.2-43.9 68.1-92.4 68.1-142.3 0-47-38.1-85.1-85.1-85.1zM271 87.1c25-34.6 65.2-55.1 107.9-55.1 73.5 0 133.1 59.6 133.1 133.1 0 68.6-42.9 128.9-79.1 172.8-44.1 53.6-97.3 100.1-133.8 127.9-12.3 9.4-27.5 14.1-43.1 14.1s-30.8-4.7-43.1-14.1C176.4 438 123.2 391.5 79.1 338 42.9 294.1 0 233.7 0 165.1 0 91.6 59.6 32 133.1 32 175.8 32 216 52.5 241 87.1l15 20.7 15-20.7z"/></svg>
+            </div>
+        <!--                bg-gradient-to-r from-purple-500 via-pink-400 to-pink-500 bg-clip-text text-transparent-->
+    </div>            </a>
+            </div>
+            <div class="flex items-center gap-4 flex !gap-1 lg:!gap-4">
+                <span class="hidden lg:inline-flex gap-4">
+                <a href="/bootcamp/01"
+    
+        wire:key="mary760b1a0c9b56669bb0892afba69f0106"
+        type="button"
+        class="btn btn-ghost"
+
+        
+                    wire:navigate
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+        
+        <!-- LABEL / SLOT -->
+                    <span class="">
+                Bootcamp
+            </span>
+                    
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                    <a href="/docs/installation"
+    
+        wire:key="maryd81ca9026045a5e4b735434eb9cbca95"
+        type="button"
+        class="btn btn-ghost"
+
+        
+                    wire:navigate
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+        
+        <!-- LABEL / SLOT -->
+                    <span class="">
+                Docs
+            </span>
+                    
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                    <a href="https://github.com/sponsors/robsontenorio"
+    
+        wire:key="maryad7f44fd1b1c2e2fe530473e8afe3581"
+        type="button"
+        class="btn btn-ghost text-pink-500"
+
+                    target="_blank"
+        
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+        
+        <!-- LABEL / SLOT -->
+                    <span class="">
+                Sponsor
+            </span>
+                    
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                </span>
+
+            <div class="border-l border-l-base-content/20 hidden sm:block">&nbsp;</div>
+            <a href="https://discord.gg/c2Dv8T2X2s"
+    
+        wire:key="mary5281b9899bc01fdfb074647b85965c69"
+        type="button"
+        class="btn btn-sm btn-ghost btn-circle me-2 hidden sm:inline-flex"
+
+                    target="_blank"
+        
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+                    <span class="block" >
+                <svg class="inline flex-shrink-0 w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M492.5 69.8c-.2-.3-.4-.6-.8-.7-38.1-17.5-78.4-30-119.7-37.1-.4-.1-.8 0-1.1 .1s-.6 .4-.8 .8c-5.5 9.9-10.5 20.2-14.9 30.6-44.6-6.8-89.9-6.8-134.4 0-4.5-10.5-9.5-20.7-15.1-30.6-.2-.3-.5-.6-.8-.8s-.7-.2-1.1-.2c-41.3 7.1-81.6 19.6-119.7 37.1-.3 .1-.6 .4-.8 .7-76.2 113.8-97.1 224.9-86.9 334.5 0 .3 .1 .5 .2 .8s.3 .4 .5 .6c44.4 32.9 94 58 146.8 74.2 .4 .1 .8 .1 1.1 0s.7-.4 .9-.7c11.3-15.4 21.4-31.8 30-48.8 .1-.2 .2-.5 .2-.8s0-.5-.1-.8-.2-.5-.4-.6-.4-.3-.7-.4c-15.8-6.1-31.2-13.4-45.9-21.9-.3-.2-.5-.4-.7-.6s-.3-.6-.3-.9 0-.6 .2-.9 .3-.5 .6-.7c3.1-2.3 6.2-4.7 9.1-7.1 .3-.2 .6-.4 .9-.4s.7 0 1 .1c96.2 43.9 200.4 43.9 295.5 0 .3-.1 .7-.2 1-.2s.7 .2 .9 .4c2.9 2.4 6 4.9 9.1 7.2 .2 .2 .4 .4 .6 .7s.2 .6 .2 .9-.1 .6-.3 .9-.4 .5-.6 .6c-14.7 8.6-30 15.9-45.9 21.8-.2 .1-.5 .2-.7 .4s-.3 .4-.4 .7-.1 .5-.1 .8 .1 .5 .2 .8c8.8 17 18.8 33.3 30 48.8 .2 .3 .6 .6 .9 .7s.8 .1 1.1 0c52.9-16.2 102.6-41.3 147.1-74.2 .2-.2 .4-.4 .5-.6s.2-.5 .2-.8c12.3-126.8-20.5-236.9-86.9-334.5zm-302 267.7c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.4 59.2-52.8 59.2zm195.4 0c-29 0-52.8-26.6-52.8-59.2s23.4-59.2 52.8-59.2c29.7 0 53.3 26.8 52.8 59.2 0 32.7-23.2 59.2-52.8 59.2z"/></svg>
+                </span>
+        
+        <!-- LABEL / SLOT -->
+                    
+        
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                <a href="https://x.com/robsontenorio"
+    
+        wire:key="maryda2c80909889697e808a8273c93d0ee5"
+        type="button"
+        class="btn btn-sm btn-ghost btn-circle me-2 hidden sm:inline-flex"
+
+                    target="_blank"
+        
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+                    <span class="block" >
+                <svg class="inline flex-shrink-0 w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M357.2 48L427.8 48 273.6 224.2 455 464 313 464 201.7 318.6 74.5 464 3.8 464 168.7 275.5-5.2 48 140.4 48 240.9 180.9 357.2 48zM332.4 421.8l39.1 0-252.4-333.8-42 0 255.3 333.8z"/></svg>
+                </span>
+        
+        <!-- LABEL / SLOT -->
+                    
+        
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                <a href="https://github.com/robsontenorio/mary"
+    
+        wire:key="maryd3a77e32c1a2d54a12f393f5f66fb487"
+        type="button"
+        class="btn btn-sm btn-ghost btn-circle me-2"
+
+                    target="_blank"
+        
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+                    <span class="block" >
+                <svg class="inline flex-shrink-0 w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM252.8 8c-138.7 0-244.8 105.3-244.8 244 0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1 100-33.2 167.8-128.1 167.8-239 0-138.7-112.5-244-251.2-244zM105.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </span>
+        
+        <!-- LABEL / SLOT -->
+                    
+        
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </a>
+                <div class="border-l border-l-base-content/20 hidden sm:block">&nbsp;</div>
+            <div>
+        <label
+            for="marydaa34ec4ea24c0c526f1327b1f95c03a"
+            x-data="{
+                theme: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light').as('mary-theme'),
+                class: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light').as('mary-class'),
+                init() {
+                    if (this.theme == 'dark') {
+                        this.$refs.sun.classList.add('swap-off');
+                        this.$refs.sun.classList.remove('swap-on');
+                        this.$refs.moon.classList.add('swap-on');
+                        this.$refs.moon.classList.remove('swap-off');
+                    }
+                    this.setToggle()
+                },
+                setToggle() {
+                    document.documentElement.setAttribute('data-theme', this.theme)
+                    document.documentElement.setAttribute('class', this.class)
+                    this.$dispatch('theme-changed', this.theme)
+                    this.$dispatch('theme-changed-class', this.class)
+                },
+                toggle() {
+                    this.theme = this.theme == 'light' ? 'dark' : 'light'
+                    this.class = this.theme == 'light' ? 'light' : 'dark'
+                    this.setToggle()
+                }
+            }"
+            @mary-toggle-theme.window="toggle()"
+            class="swap swap-rotate btn btn-sm btn-circle btn-ghost"
+        >
+            <input id="marydaa34ec4ea24c0c526f1327b1f95c03a" type="checkbox" class="theme-controller opacity-0" @click="toggle()" :value="theme" />
+            <svg x-ref="sun" class="inline flex-shrink-0 w-5 h-5 swap-on" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/>
+</svg>
+                <svg x-ref="moon" class="inline flex-shrink-0 w-5 h-5 swap-off" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/>
+</svg>
+            </label>
+    </div>
+    <script>
+        document.documentElement.setAttribute("data-theme", localStorage.getItem("mary-theme")?.replaceAll("\"", ""))
+        document.documentElement.setAttribute("class", localStorage.getItem("mary-class")?.replaceAll("\"", ""))
+    </script>            <div id="doc-search" class="me-2">...</div>
+            </div>
+        </div>
+    </div>
+    <main class="w-full mx-auto max-w-screen-2xl">
+    <div class="drawer lg:drawer-open">
+        <input id="main-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content w-full mx-auto p-5 lg:px-10 lg:py-5 lg:max-w-4xl !pt-10">
+            
+            <div wire:snapshot="{&quot;data&quot;:[],&quot;memo&quot;:{&quot;id&quot;:&quot;B7lxaleFcMGLzQ9C6tIp&quot;,&quot;name&quot;:&quot;pages::bootcamp.06&quot;,&quot;path&quot;:&quot;bootcamp\/06&quot;,&quot;method&quot;:&quot;GET&quot;,&quot;release&quot;:&quot;a-a-a&quot;,&quot;children&quot;:[],&quot;scripts&quot;:[],&quot;assets&quot;:[],&quot;errors&quot;:[],&quot;locale&quot;:&quot;en&quot;,&quot;islands&quot;:[]},&quot;checksum&quot;:&quot;c7679729d0e1de22d9e170dddeb7f081b796da0a7e2a0d8d67c0205d228ca3b5&quot;}" wire:effects="[]" wire:id="B7lxaleFcMGLzQ9C6tIp" wire:name="pages::bootcamp.06" class="docs">
+    <h2 id="authentication" class="mb-5 mary-header-anchor text-3xl font-semibold"">
+    <a href="#authentication">Authentication</a>
+</h2>
+    <p>
+        Let's see how easy it is to implement authentication and registration features from the ground in no time, <b>without any starter kits.</b>
+    </p>
+    <ul>
+        <li>Routes</li>
+        <li>Template</li>
+        <li>Login</li>
+        <li>Registration</li>
+    </ul>
+
+    <h2 id="routes" class="mb-5 mary-header-anchor text-xl font-semibold mt-14"">
+    <a href="#routes">Routes</a>
+</h2>
+    <p>
+        Here is what <code>routes/web.php</code> looks like with authentication.
+    </p>
+    <ul>
+        <li>Login route.</li>
+        <li>Logout route.</li>
+        <li>Protect some routes.</li>
+    </ul>
+
+    <p>
+        Go ahead and copy/paste this.
+    </p>
+
+    
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='php' class='phiki language-php material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> Users will be redirected to this route if not logged in
+</span></div><div class='line'><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/login</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::login</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">name</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">login</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> Define the logout
+</span></div><div class='line'><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">get</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/logout</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #82AAFF;">auth</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">logout</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #82AAFF;">request</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">session</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">invalidate</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #82AAFF;">request</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">session</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">regenerateToken</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">return</span><span class="token"> </span><span class="token" style="color: #82AAFF;">redirect</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">}</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> Protected routes here
+</span></div><div class='line'><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">middleware</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">auth</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">group</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::index</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/users</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::users.index</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/users/create</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::users.create</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/users/{user}/edit</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::users.edit</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> ... more
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">}</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>    
+
+    <h2 id="template" class="mb-5 mary-header-anchor text-xl font-semibold mt-14"">
+    <a href="#template">Template</a>
+</h2>
+    <p>
+        Create an new layout at <code>resources/views/layouts/empty.blade.php</code>. We are going to use this layout for the login and registration pages.
+    </p>
+
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='blade' class='phiki language-blade material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #89DDFF;">&lt;!</span><span class="token" style="color: #f07178;">DOCTYPE</span><span class="token"> </span><span class="token" style="color: #C792EA;">html</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">html</span><span class="token"> </span><span class="token" style="color: #C792EA;">lang</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #82AAFF;">{{</span><span class="token"> </span><span class="token" style="color: #82AAFF;">str_replace</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">_</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">-</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #82AAFF;">app</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">getLocale</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #82AAFF;">}}</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">head</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">meta</span><span class="token"> </span><span class="token" style="color: #C792EA;">charset</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">utf-8</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">meta</span><span class="token"> </span><span class="token" style="color: #C792EA;">name</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">viewport</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">content</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">meta</span><span class="token"> </span><span class="token" style="color: #C792EA;">name</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">csrf-token</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">content</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #82AAFF;">{{</span><span class="token"> </span><span class="token" style="color: #82AAFF;">csrf_token</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #82AAFF;">}}</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #82AAFF;">@vite</span><span class="token" style="color: #A6ACCD;">(</span><span class="token" style="color: #89DDFF;">[</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">resources/css/app.css</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">resources/js/app.js</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">]</span><span class="token" style="color: #A6ACCD;">)</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">head</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">body</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">min-h-screen font-sans antialiased bg-base-200</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #676E95;">{{--</span><span class="token" style="color: #676E95;"> You could elaborate the layout here </span><span class="token" style="color: #676E95;">--}}</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #676E95;">{{--</span><span class="token" style="color: #676E95;"> The important part is to have a different layout from the main app layout </span><span class="token" style="color: #676E95;">--}}</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-main</span><span class="token"> </span><span class="token" style="color: #C792EA;">full-width</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-slot:content</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #82AAFF;">{{</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">slot</span><span class="token"> </span><span class="token" style="color: #82AAFF;">}}</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-slot:content</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-main</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">body</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">html</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>
+    <h2 id="login-page" class="mb-5 mary-header-anchor text-xl font-semibold mt-14"">
+    <a href="#login-page">Login page</a>
+</h2>
+    <p>
+        Create the login component.
+    </p>
+
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='shellscript' class='phiki language-shellscript material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #FFCB6B;">php</span><span class="token"> </span><span class="token" style="color: #C3E88D;">artisan</span><span class="token"> </span><span class="token" style="color: #C3E88D;">livewire:make</span><span class="token"> </span><span class="token" style="color: #C3E88D;">pages::login
+</span></div></code></pre>
+    </div>
+</div>
+    
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='php' class='phiki language-php material-theme-palenight torchlight has-highlight-lines' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Layout</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Rule</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Title</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Component</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">new</span><span class="token">
+</span></div><div style="background: #00000050"class='line line-highlight line-has-background'><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Layout</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">layouts.empty</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">       </span></div><div class='line'><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Title</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">Login</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #C792EA;">class</span><span class="token"> </span><span class="token" style="color: #FFCB6B;">extends</span><span class="token" style="color: #A6ACCD;"> Component </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required|email</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">email</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">password</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #82AAFF;">mount</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> It is logged in
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">if</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #82AAFF;">auth</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">user</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">return</span><span class="token"> </span><span class="token" style="color: #82AAFF;">redirect</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #82AAFF;">login</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">credentials</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #89DDFF;">this</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">validate</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">if</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #82AAFF;">auth</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">attempt</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">credentials</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #82AAFF;">request</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">session</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">regenerate</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">return</span><span class="token"> </span><span class="token" style="color: #82AAFF;">redirect</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">intended</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #89DDFF;">this</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">addError</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">email</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">The provided credentials do not match our records.</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>    
+
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='blade' class='phiki language-blade material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">div</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">md:w-96 mx-auto mt-20</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">div</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">mb-10</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-app-brand</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">div</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-form</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:submit</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">login</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">E-mail</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">email</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-envelope</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">type</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-key</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-slot:actions</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-button</span><span class="token"> </span><span class="token" style="color: #C792EA;">label</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Create an account</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">btn-ghost</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">link</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">/register</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-button</span><span class="token"> </span><span class="token" style="color: #C792EA;">label</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Login</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">type</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">submit</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-paper-airplane</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">btn-primary</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">spinner</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">login</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-slot:actions</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-form</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">div</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>
+    <p>
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <svg class="inline flex-shrink-0 w-5 h-5 text-warning" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>
+</svg>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <strong>That is it!</strong>
+    </p>
+    <p>
+        Try to navigate to a protected route, and you will be redirected to the login page.
+        The default app layout shipped with maryUI shows the authenticated user and logout button for you.
+    </p>
+
+    <h2 id="registration-page" class="mb-5 mary-header-anchor text-xl font-semibold mt-14"">
+    <a href="#registration-page">Registration page</a>
+</h2>
+    <p>
+        Add this <strong>public</strong> route to <code>web.php</code>.
+    </p>
+
+    
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='php' class='phiki language-php material-theme-palenight torchlight has-highlight-lines' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> Public routes
+</span></div><div style="background: #00000050"class='line line-highlight line-has-background'><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">livewire</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/register</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">,</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">pages::register</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token"> </span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> Protected routes here
+</span></div><div class='line'><span class="token" style="color: #FFCB6B;">Route</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">middleware</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">auth</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">group</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> ...
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">}</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>    
+
+    <p>
+        Create the registration form.
+    </p>
+
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='shellscript' class='phiki language-shellscript material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #FFCB6B;">php</span><span class="token"> </span><span class="token" style="color: #C3E88D;">artisan</span><span class="token"> </span><span class="token" style="color: #C3E88D;">livewire:make</span><span class="token"> </span><span class="token" style="color: #C3E88D;">pages::register
+</span></div></code></pre>
+    </div>
+</div>
+    
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='php' class='phiki language-php material-theme-palenight torchlight has-highlight-lines' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">App</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Models</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">User</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Layout</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Rule</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Attributes</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Title</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Livewire</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Component</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">use</span><span class="token"> </span><span class="token" style="color: #A6ACCD;">Illuminate</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Support</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #A6ACCD;">Facades</span><span class="token" style="color: #89DDFF;">\</span><span class="token" style="color: #FFCB6B;">Hash</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token" style="color: #F78C6C;">new</span><span class="token">
+</span></div><div style="background: #00000050"class='line line-highlight line-has-background'><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Layout</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">layouts.empty</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">       </span></div><div class='line'><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Title</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">Registration</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #C792EA;">class</span><span class="token"> </span><span class="token" style="color: #FFCB6B;">extends</span><span class="token" style="color: #A6ACCD;"> Component </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">name</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required|email|unique:users</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">email</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required|confirmed</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">password</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #A6ACCD;">#[</span><span class="token" style="color: #A6ACCD;">Rule</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">required</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #A6ACCD;">]</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #F78C6C;">string</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">password_confirmation</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #82AAFF;">mount</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #676E95;">//</span><span class="token" style="color: #676E95;"> It is logged in
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">if</span><span class="token"> </span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #82AAFF;">auth</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">user</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">)</span><span class="token"> </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">return</span><span class="token"> </span><span class="token" style="color: #82AAFF;">redirect</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #C792EA;">public</span><span class="token"> </span><span class="token" style="color: #C792EA;">function</span><span class="token"> </span><span class="token" style="color: #82AAFF;">register</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">{</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">data</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #89DDFF;">this</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">validate</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">data</span><span class="token" style="color: #89DDFF;">[</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">avatar</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">]</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/empty-user.jpg</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">data</span><span class="token" style="color: #89DDFF;">[</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">]</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #FFCB6B;">Hash</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">make</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">data</span><span class="token" style="color: #89DDFF;">[</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">]</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">user</span><span class="token"> </span><span class="token" style="color: #89DDFF;">=</span><span class="token"> </span><span class="token" style="color: #FFCB6B;">User</span><span class="token" style="color: #89DDFF;">::</span><span class="token" style="color: #82AAFF;">create</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">data</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #82AAFF;">auth</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">login</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">$</span><span class="token" style="color: #A6ACCD;">user</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #82AAFF;">request</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">session</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">-&gt;</span><span class="token" style="color: #82AAFF;">regenerate</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">return</span><span class="token"> </span><span class="token" style="color: #82AAFF;">redirect</span><span class="token" style="color: #89DDFF;">(</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #C3E88D;">/</span><span class="token" style="color: #89DDFF;">&#039;</span><span class="token" style="color: #89DDFF;">)</span><span class="token" style="color: #89DDFF;">;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">}</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>    
+
+    <div x-classes="lg:col-span-3 lg:col-span-4 lg:col-span-5 lg:col-span-6 lg:col-span-7 lg:col-span-8 lg:col-span-9"></div>
+<div class="">
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <div wire:ignore class="">
+        <pre><code data-theme='material-theme-palenight' data-lang='blade' class='phiki language-blade material-theme-palenight torchlight' style='background-color: #292D3E;color: #A6ACCD;--theme-selection-background: #00000080'><!-- Syntax highlighted by Phiki and torchlight.dev --><div class='line'><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">div</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">md:w-96 mx-auto mt-20</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">div</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">mb-10</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-app-brand</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">div</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-form</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:submit</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">register</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Name</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">name</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-user</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">E-mail</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">email</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-envelope</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">type</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-key</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-input</span><span class="token"> </span><span class="token" style="color: #C792EA;">placeholder</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Confirm Password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">wire:model</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password_confirmation</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">type</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">password</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-key</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-slot:actions</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-button</span><span class="token"> </span><span class="token" style="color: #C792EA;">label</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Already registered?</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">btn-ghost</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">link</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">/login</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">            </span><span class="token" style="color: #89DDFF;">&lt;</span><span class="token" style="color: #f07178;">x-button</span><span class="token"> </span><span class="token" style="color: #C792EA;">label</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">Register</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">type</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">submit</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">icon</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">o-paper-airplane</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">class</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">btn-primary</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token"> </span><span class="token" style="color: #C792EA;">spinner</span><span class="token" style="color: #89DDFF;">=</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #C3E88D;">register</span><span class="token" style="color: #89DDFF;">&quot;</span><span class="token" style="color: #89DDFF;"> /&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">        </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-slot:actions</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token">    </span><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">x-form</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div><div class='line'><span class="token" style="color: #89DDFF;">&lt;/</span><span class="token" style="color: #f07178;">div</span><span class="token" style="color: #89DDFF;">&gt;</span><span class="token">
+</span></div></code></pre>
+    </div>
+</div>
+    <p>
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <svg class="inline flex-shrink-0 w-5 h-5 text-warning" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>
+</svg>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <strong>It is done!</strong>
+    </p>
+
+    <p>
+        Hit the <strong>/register</strong> route on browser and create an account.
+    </p>
+
+    <div
+        wire:key="marya58969dc594001ee74a5e0cd18da40a6"
+        
+        class="alert rounded-md markdown mb-10"
+        x-data="{ show: true }" x-show="show"
+    >
+        <!--[if BLOCK]><![endif]-->            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <svg class="inline flex-shrink-0 w-5 h-5 self-center" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/>
+</svg>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <!--[if ENDBLOCK]><![endif]-->
+        <!--[if BLOCK]><![endif]-->            <span>As you are logged in, file uploads will work in the <strong>HTML Editor</strong> component</span>
+        <!--[if ENDBLOCK]><![endif]-->
+        <div class="flex items-center gap-3">
+            
+        </div>
+
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->    </div>
+    <div class="flex justify-between mt-10">
+        <!--[if BLOCK]><![endif]-->        <a href="/bootcamp/05"
+    
+        wire:key="mary1b607fccce6f890e6054bbb2402c2d67"
+        type="button"
+        class="btn !no-underline btn-ghost"
+
+        
+                    wire:navigate
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+        <!-- ICON -->
+        <!--[if BLOCK]><![endif]-->            <span class="block" >
+                <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <svg class="inline flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+</svg>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->            </span>
+        <!--[if ENDBLOCK]><![endif]-->
+        <!-- LABEL / SLOT -->
+        <!--[if BLOCK]><![endif]-->            <span class="">
+                Spotlight
+            </span>
+            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <!--[if ENDBLOCK]><![endif]-->
+        <!-- ICON RIGHT -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+        <!-- SPINNER RIGHT -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]-->        </a>
+    <!--[if ENDBLOCK]><![endif]-->        <!--[if BLOCK]><![endif]-->        <a href="/bootcamp/07"
+    
+        wire:key="maryff5a8e30c37464ee6b5a08c473fa3fec"
+        type="button"
+        class="btn !no-underline btn-ghost"
+
+        
+                    wire:navigate
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+        <!-- ICON -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+        <!-- LABEL / SLOT -->
+        <!--[if BLOCK]><![endif]-->            <span class="">
+                A wrap
+            </span>
+            <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <!--[if ENDBLOCK]><![endif]-->
+        <!-- ICON RIGHT -->
+        <!--[if BLOCK]><![endif]-->            <span class="block" >
+                <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->        <svg class="inline flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+</svg>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->            </span>
+        <!--[if ENDBLOCK]><![endif]-->
+        <!-- SPINNER RIGHT -->
+        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]-->        </a>
+    <!--[if ENDBLOCK]><![endif]-->    </div>
+</div>
+
+            <hr class="my-10 border-base-content/10" />
+
+            <div class="text-center text-sm text-base-content/70 pb-10">
+                Made with
+                <svg class="inline flex-shrink-0 text-pink-500 w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/>
+</svg>
+                    by
+                <a href="https://x.com/robsontenorio" class="underline">Robson Tenório</a> and <a href="https://github.com/robsontenorio/mary" class="underline">contributors</a>.
+            </div>
+        </div>
+
+        
+                    <div
+                x-data="{
+                    collapsed: false,
+                    collapseText: 'Collapse',
+                    toggle() {
+                        this.collapsed = !this.collapsed;
+                        fetch('/mary/toogle-sidebar?collapsed=' + this.collapsed);
+                        this.$dispatch('sidebar-toggled', this.collapsed);
+                    }
+                }"
+
+                @menu-sub-clicked="if(collapsed) { toggle() }"
+                class="drawer-side z-20 lg:z-auto top-0 lg:top-[65px] lg:h-[calc(100vh-65px)]"
+            >
+                <label for="main-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+
+                
+                <div
+                    :class="collapsed
+                        ? '!w-[62px] [&>*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+                        : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+                    class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+                >
+                    <div class="flex-1">
+                        <ul class="menu w-full sm:mt-6" >
+        
+        
+        <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/01"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Bootcamp
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/02"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zM224 224a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Setup
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/03"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM352 352a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM128 192a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Listing users
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/04"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm64 96a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm64 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm128 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Updating users
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/05"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zm160 64a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM128 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM352 160a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM320 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Spotlight
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap mary-active-menu bg-base-300"
+
+                            href="/bootcamp/06"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64L64 32zm64 96a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM96 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM224 224a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm64-64a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32 160a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    Authentication
+
+                                                </span>
+                    </a>
+    </li>                <li class="">
+        <a
+            class="my-0.5 py-1.5 px-4 hover:text-inherit whitespace-nowrap"
+
+                            href="/bootcamp/07"
+
+                
+                                    wire:navigate
+                            
+                    >
+            
+            
+                            <span class="block py-0.5" >
+                    <svg class="inline flex-shrink-0 w-5 h-5 mb-0.5" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc. --><path fill="currentColor" d="M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zm160 64a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM128 288a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm32 64a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM320 192a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm32 64a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM320 384a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>
+                    </span>
+            
+                        <span class="mary-hideable whitespace-nowrap truncate">
+                                    A wrap
+
+                                                </span>
+                    </a>
+    </li>
+    </ul>
+                    </div>
+
+                     
+                                    </div>
+            </div>
+                
+
+    </div>
+</main>
+
+ 
+ 
+    
+    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3/dist/umd/index.js"></script>
+    <script type="text/javascript">
+        docsearch({
+            appId: '0AWOCS02I6',
+            apiKey: '7814a814bf52a38ef15b03d5bf6be0f5',
+            indexName: 'mary-ui',
+            insights: true,
+            container: '#doc-search',
+            debug: false
+        });
+    </script>
+
+    
+    <div>
+    <div x-persist="mary-toaster">
+    <div
+        x-cloak
+        x-data="{
+            show: false,
+            toast: {},
+            timer: null,
+            interval: null,
+
+            maxProgress: 100,
+            progress: 100,
+            initialProgress: 0,
+
+            startTime: 0,
+            remaining: 0,
+
+            start(toast) {
+                this.clearTimers();
+
+                this.toast = toast;
+                this.progress = this.maxProgress;
+
+                this.remaining = toast.timeout;
+
+                this.initialProgress = this.progress;
+                this.startTime = Date.now();
+
+                // delay for DOM initiation
+                setTimeout(() => this.show = true, 50);
+
+                this.startProgress();
+                this.startCloseTimer();
+            },
+
+            startProgress() {
+                if (this.toast.noProgress) return;
+
+                const intervalRefreshRate = 8;
+                this.startTime = Date.now();
+
+                const startProgressValue = this.initialProgress;
+
+                this.interval = setInterval(() => {
+                    const elapsed = Date.now() - this.startTime;
+                    const ratio = elapsed / this.remaining;
+
+                    this.progress = startProgressValue * (1 - ratio);
+
+                    if (this.progress <= 0) {
+                        this.progress = 0;
+                        clearInterval(this.interval);
+                        this.interval = null;
+                    }
+                }, intervalRefreshRate);
+            },
+
+            startCloseTimer() {
+                this.startTime = Date.now();
+
+                this.timer = setTimeout(() => {
+                    this.close();
+                }, this.remaining);
+            },
+
+            pause() {
+                if (!this.show) return;
+
+                const elapsed = Date.now() - this.startTime;
+                this.remaining -= elapsed;
+
+                this.initialProgress = this.progress;
+
+                this.clearTimers();
+            },
+
+            resume() {
+                if (!this.show || this.remaining <= 0) return;
+
+                this.startProgress();
+                this.startCloseTimer();
+            },
+
+            close() {
+                this.show = false;
+                this.clearTimers();
+            },
+
+            clearTimers() {
+                clearTimeout(this.timer);
+                clearInterval(this.interval);
+                this.timer = null;
+                this.interval = null;
+            }
+        }"
+        @mary-toast.window="start($event.detail.toast)"
+    >
+        <div
+            class="toast !whitespace-normal rounded-box fixed cursor-pointer z-[999] overflow-hidden"
+            :class="toast.position || 'toast-top toast-end'"
+            x-show="show"
+            @mouseenter="pause()"
+            @mouseleave="resume()"
+            x-classes="alert alert-success alert-warning alert-error alert-info top-10 end-10 toast toast-top toast-bottom toast-center toast-end toast-middle toast-start"
+            @click="show = false; clearInterval(interval)"
+        >
+            <div class="alert gap-2" :class="toast.css">
+                <div x-html="toast.icon" class="hidden sm:inline-block"></div>
+                <div class="grid">
+                    <div x-html="toast.title" class="font-bold"></div>
+                    <div x-html="toast.description" class="text-xs"></div>
+                </div>
+            </div>
+            <progress
+                x-show="!toast.noProgress"
+                class="-mt-3 h-1 w-full progress"
+                :class="toast.progressClass"
+                :max="maxProgress"
+                :value="progress">
+            </progress>
+        </div>
+    </div>
+
+    <script>
+        window.toast = function(payload){
+            window.dispatchEvent(new CustomEvent('mary-toast', {detail: payload}))
+        }
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('request', ({fail}) => {
+                fail(({status, content, preventDefault}) => {
+                    try {
+                        let result = JSON.parse(content);
+
+                        if (result?.toast && typeof window.toast === "function") {
+                            window.toast(result);
+                        }
+
+                        if ((result?.prevent_default ?? false) === true) {
+                            preventDefault();
+                        }
+                    } catch (e) {
+                        console.log(e)
+                    }
+                })
+            })
+        })
+    </script>
+    </div>
+</div>
+    
+    <div
+        x-data="
+            {
+                value: '',
+                results: [],
+                open: $persist(false).as('mary-spotlight-modal'),
+                elapsed: 0,
+                elapsedStep: 200,
+                elapsedMax: 500,
+                maxDebounce: 250,
+                searchTimer: null,
+                debounceTimer: null,
+                controller: new AbortController(),
+                query: '',
+                searchedWithNoResults: false,
+                init(){
+                    if(this.open) {
+                        this.show()
+                    }
+
+                    this.$watch('value', value => this.debounce(() => this.search(), this.maxDebounce))
+
+                    // Fix weird issue when navigating back
+                    document.addEventListener('livewire:navigating', () => {
+                        this.close()
+                        document.querySelectorAll('.mary-spotlight-element')?.forEach(el =>  el.remove());
+                    });
+                },
+                close() {
+                    this.open = false
+                    $refs.marySpotlightRef?.close()
+                },
+                show() {
+                    this.open = true;
+                    $refs.marySpotlightRef.showModal();
+                },
+                focus() {
+                    setTimeout(() => {
+                        this.$refs.spotSearch.focus();
+                        this.$refs.spotSearch.select();
+                    }, 100)
+                },
+                updateQuery(query){
+                    this.query = query
+                    this.search()
+                },
+                startTimer() {
+                    this.searchTimer = setInterval(() => this.elapsed += this.elapsedStep, this.elapsedStep)
+                },
+                resetTimer() {
+                    clearInterval(this.searchTimer)
+                    this.elapsed = 0
+                },
+                debounce(fn, waitTime) {
+                    clearTimeout(this.debounceTimer)
+                    this.debounceTimer = setTimeout(() => fn(), waitTime)
+                },
+                async search() {
+                    $refs.spotSearch.focus()
+
+                    if (this.value == '') {
+                        this.results = []
+                        return
+                    }
+
+                    this.resetTimer()
+                    this.startTimer()
+
+                    try {
+                        this.controller?.abort()
+                        this.controller = new AbortController();
+
+                        let response = await fetch(`/mary/spotlight?search=${this.value}&${this.query}`, { signal: this.controller.signal })
+                        this.results = await response.json()
+                    } catch(e) {
+                        console.log(e)
+                        return
+                    }
+
+                    this.resetTimer()
+
+                    Object.keys(this.results).length
+                        ? this.searchedWithNoResults = false
+                        : this.searchedWithNoResults = true
+                }
+            }"
+
+        @keydown.window.prevent.meta.g="show(); focus();"
+        @keydown.window.prevent.ctrl.g="show(); focus();"
+        @keydown.escape="close()"
+        @keydown.up="$focus.previous()"
+        @keydown.down="$focus.next()"
+        @mary-search.window="updateQuery(event.detail)"
+        @mary-search-open.window="show(); focus();"
+    >
+        <dialog
+    class="modal backdrop-blur-sm" x-ref="marySpotlightRef"
+
+            id="marySpotlight"
+    
+            x-trap="open" x-bind:inert="!open"
+    >
+    <div class="modal-box absolute py-0 top-0 lg:top-10 w-full lg:max-w-3xl rounded-none md:rounded-box">
+                    <form method="dialog" tabindex="-1">
+                                    <button
+    
+        wire:key="maryeb7dfc4cd6dac92d14eead70d278ee4b"
+        type="submit" tabindex="-1"
+        class="btn btn-circle btn-sm btn-ghost absolute end-2 top-2 z-[999]" type="submit" tabindex="-1"
+
+        
+        
+        
+            >
+
+        <!-- SPINNER LEFT -->
+        
+        <!-- ICON -->
+                    <span class="block" >
+                <svg class="inline flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+</svg>
+                </span>
+        
+        <!-- LABEL / SLOT -->
+                    
+        
+        <!-- ICON RIGHT -->
+        
+        <!-- SPINNER RIGHT -->
+        
+            </button>
+                                </form>
+        
+        
+        <div>
+            <div  @click.outside="close()">
+                <!-- INPUT -->
+                <div class="flex">
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            <svg class="inline flex-shrink-0 w-5 h-5 opacity-40" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+</svg>
+                                <input
+                                id="marybd6448d82f2e387d65308d3818a1e61e"
+                                x-model="value"
+                                x-ref="spotSearch"
+                                name="spotSearch"
+                                placeholder=" Type &#039;a&#039; ..."
+                                class="w-full input my-2 border-none outline-none shadow-none border-transparent  focus:shadow-none focus:outline-none focus:border-transparent"
+                                @focus="$el.focus()"
+                                autofocus
+                                tabindex="1"
+                            />
+                        </div>
+                    </div>
+
+                                    </div>
+
+                <!-- PROGRESS  -->
+                <div class="h-[1px]">
+                    <progress class="progress hidden h-[1px]" :class="elapsed > elapsedMax && '!h-[2px] !block'"></progress>
+                </div>
+
+                <!-- SLOT -->
+                                    
+                
+                <!-- NO RESULTS -->
+                <template x-if="searchedWithNoResults && value != ''">
+                    <div class="text-base-content/50 p-3 border-t-[length:var(--border)] border-t-base-content/10 mary-spotlight-element">Nothing found.</div>
+                </template>
+
+                <!-- RESULTS  -->
+                <div class="-mx-1 mt-1" @click="close()" @keydown.enter="close()" x-ref="spotResults">
+                    <template x-for="(item, index) in results" :key="index">
+                        <!-- ITEM -->
+                        <a x-bind:href="item.link" class="mary-spotlight-element"  wire:navigate  tabindex="0">
+                            <div class="p-3 hover:bg-base-200 border-t-[length:var(--border)] border-t-base-content/10" >
+                                <div class="flex gap-3 items-center">
+                                    <!-- ICON -->
+                                    <template x-if="item.icon">
+                                        <div x-html="item.icon"></div>
+                                    </template>
+                                    <!-- AVATAR -->
+                                    <template x-if="item.avatar && !item.icon">
+                                        <div>
+                                            <img :src="item.avatar" class="rounded-full w-11 h-11"  />
+                                        </div>
+                                    </template>
+                                    <div class="flex-1 overflow-hidden whitespace-nowrap text-ellipsis truncate w-0 mary-hideable">
+                                        <!-- NAME -->
+                                        <div x-html="item.name" class="font-semibold truncate"></div>
+
+                                        <!-- DESCRIPTION -->
+                                        <template x-if="item.description">
+                                            <div x-html="item.description" class="text-base-content/50 text-sm truncate"></div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                    <div x-show="results.length" class="mb-3"></div>
+                </div>
+            </div>
+        </div>
+
+        
+            </div>
+
+            <form class="modal-backdrop" method="dialog">
+                            <button type="submit">close</button>
+                    </form>
+    </dialog>    </div>
+    
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="https://mary-ui.com/livewire-1c1b1336/livewire.min.js?id=657d57c2"   data-csrf="2VqqIGZUuMRPaF2e7txUA9FJ6Is1HQ4syP9lnbtn" data-module-url="https://mary-ui.com/livewire-1c1b1336" data-update-uri="https://mary-ui.com/livewire-1c1b1336/update" data-navigate-once="true"></script>
+</body>
+</html>

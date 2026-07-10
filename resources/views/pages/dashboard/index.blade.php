@@ -9,19 +9,15 @@ use Mary\Traits\Toast;
 new class extends Component {
     use Toast;
 
-    public $postsCount;
-    public $pagesCount;
-    public $categoriesCount;
-    public $publishedPostsCount;
-    public $draftPostsCount;
-
-    public function mount()
+    public function with(): array
     {
-        $this->postsCount = Post::count();
-        $this->pagesCount = Page::count();
-        $this->categoriesCount = Category::count();
-        $this->publishedPostsCount = Post::where('is_published', true)->count();
-        $this->draftPostsCount = Post::where('is_published', false)->count();
+        return [
+            'postsCount' => Post::count(),
+            'pagesCount' => Page::count(),
+            'categoriesCount' => Category::count(),
+            'publishedPostsCount' => Post::where('is_published', true)->count(),
+            'draftPostsCount' => Post::where('is_published', false)->count(),
+        ];
     }
 }; ?>
 
@@ -32,10 +28,10 @@ new class extends Component {
         <x-card shadow class="p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">{{ __('cms.posts') }}</p>
+                    <p class="text-sm text-base-content/60">{{ __('cms.posts') }}</p>
                     <p class="text-3xl font-bold">{{ $postsCount }}</p>
                 </div>
-                <x-icon name="o-document" class="w-10 text-gray-300" />
+                <x-icon name="o-document" class="w-10 text-base-content/20" />
             </div>
             <div class="mt-2 flex gap-2 text-xs">
                 <span class="badge badge-success">{{ $publishedPostsCount }} {{ __('cms.published') }}</span>
@@ -46,31 +42,31 @@ new class extends Component {
         <x-card shadow class="p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">{{ __('cms.pages') }}</p>
+                    <p class="text-sm text-base-content/60">{{ __('cms.pages') }}</p>
                     <p class="text-3xl font-bold">{{ $pagesCount }}</p>
                 </div>
-                <x-icon name="o-document-text" class="w-10 text-gray-300" />
+                <x-icon name="o-document-text" class="w-10 text-base-content/20" />
             </div>
-            <a href="{{ route('admin.pages.index') }}" class="mt-2 text-sm text-primary hover:underline">{{ __('cms.view_all') }}</a>
+            <a href="{{ route('admin.pages.index') }}" wire:navigate class="mt-2 text-sm text-primary hover:underline">{{ __('cms.view_all') }}</a>
         </x-card>
 
         <x-card shadow class="p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">{{ __('cms.categories') }}</p>
+                    <p class="text-sm text-base-content/60">{{ __('cms.categories') }}</p>
                     <p class="text-3xl font-bold">{{ $categoriesCount }}</p>
                 </div>
-                <x-icon name="o-folder" class="w-10 text-gray-300" />
+                <x-icon name="o-folder" class="w-10 text-base-content/20" />
             </div>
-            <a href="{{ route('admin.categories.index') }}" class="mt-2 text-sm text-primary hover:underline">{{ __('cms.view_all') }}</a>
+            <a href="{{ route('admin.categories.index') }}" wire:navigate class="mt-2 text-sm text-primary hover:underline">{{ __('cms.view_all') }}</a>
         </x-card>
 
         <x-card shadow class="p-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-500">{{ __('cms.quick_actions') }}</p>
+                    <p class="text-sm text-base-content/60">{{ __('cms.quick_actions') }}</p>
                 </div>
-                <x-icon name="o-bolt" class="w-10 text-gray-300" />
+                <x-icon name="o-bolt" class="w-10 text-base-content/20" />
             </div>
             <div class="mt-2 flex gap-2">
                 <a href="{{ route('admin.posts.create') }}" wire:navigate class="btn btn-sm btn-primary">{{ __('cms.new_post') }}</a>
