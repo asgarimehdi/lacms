@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @if(app()->getLocale() === 'fa') dir="rtl" @endif>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
@@ -63,5 +63,30 @@
 
     {{--  TOAST area --}}
     <x-toast />
+
+    {{-- FAB Quick Create --}}
+    <div class="fixed bottom-6 right-6 z-50" x-data="{ open: false }">
+        <div x-show="open" x-transition class="mb-2 menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li>
+                <a href="{{ route('admin.posts.create') }}" wire:navigate class="flex items-center gap-2">
+                    <x-icon name="o-document-plus" />
+                    <span>{{ __('cms.new_post') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.pages.create') }}" wire:navigate class="flex items-center gap-2">
+                    <x-icon name="o-document-text" />
+                    <span>{{ __('cms.new_page') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.categories.create') }}" wire:navigate class="flex items-center gap-2">
+                    <x-icon name="o-folder-plus" />
+                    <span>{{ __('cms.new_category') }}</span>
+                </a>
+            </li>
+        </div>
+        <x-button icon="o-plus" class="btn-circle btn-lg btn-primary shadow-lg" @click="open = !open" />
+    </div>
 </body>
 </html>
