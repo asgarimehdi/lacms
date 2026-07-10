@@ -1,1 +1,1 @@
-//
+// Trix editor is loaded via CDN (see layouts/app.blade.php)

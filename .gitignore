@@ -1,27 +1,73 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
+# Laravel
+/.env
+/.env.backup
+/.env.production
+/.phpunit.result.cache
 /.phpunit.cache
-/.vscode
-/.zed
 /auth.json
-/node_modules
-/public/build
-/public/fonts-manifest.dev.json
-/public/hot
-/public/storage
 /storage/*.key
 /storage/pail
+/storage/app/backups
+/storage/framework/cache/*
+!/storage/framework/cache/.gitkeep
+/storage/framework/queries/*
+!/storage/framework/queries/.gitkeep
+/storage/framework/relations/*
+!/storage/framework/relations/.gitkeep
+/storage/framework/routing/*
+!/storage/framework/routing/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/testing/*
+!/storage/framework/testing/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/framework/views/livewire/*
+/storage/logs/*
+!/storage/logs/.gitkeep
+
+# Bootstrap cache (framework-generated)
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+!/bootstrap/cache/packages.php
+!/bootstrap/cache/services.php
+
+# Build
+/public/build
+/public/hot
+/public/fonts-manifest.dev.json
+/public/storage
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+/.pnpm-store
+
+# Composer
 /vendor
+composer.phar
+
+# IDE
+/.vscode
+/.idea
+/.zed
+/.cursor/
+/.nova
+/.codex
+/.phpactor.json
 _ide_helper.php
+_ide_helper_models.php
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Laravel
 Homestead.json
 Homestead.yaml
-Thumbs.db
+Vagrantfile
+
+# Lock files (sometimes ignore)
+# package-lock.json
+# yarn.lock

@@ -1,0 +1,297 @@
+
+
+ Listing users 
+
+ As you can see on the existing users/index.blade.php example component you can already sort and filter, but the data is hardcoded. Let's fix it now!
+
+ Table component 
+
+ Table docs
+
+ The x-table is a powerful component. You can easily display data, paginate, customize rows using slots, or make it sortable, clickable, selectable or
+ expandable.
+
+ &lt; x-table :headers = &quot; $headers &quot; :rows = &quot; $users &quot; /&gt; 
+
+ Let's replace entirely the users() method to make it use an Eloquent query.
+
+ use Illuminate \ Database \ Eloquent \ Builder ; 
+
+ public function users ( ) : Collection 
+
+ { 
+
+ return User :: query ( ) 
+
+ -&gt; with ( [ ' country ' ] ) 
+
+ -&gt; when ( $ this -&gt; search , fn ( Builder $ q ) =&gt; $ q -&gt; where ( ' name ' , ' like ' , &quot; % $ this -&gt; search % &quot; ) ) 
+
+ -&gt; orderBy ( ... array_values ( $ this -&gt; sortBy ) ) 
+
+ -&gt; get ( ) ; 
+
+ } 
+
+ After this you can see all the users from the database.
+ Notice the users.age column is empty because we have removed it from migrations. Let's fix it on the next topic.
+
+ Sorting 
+
+ As you noticed on example source code, we have a $sortBy property to control the sorting column and its direction.
+ It works automatically when you click on the table headers.
+
+ &lt; x-table :headers = &quot; $headers &quot; :rows = &quot; $users &quot; :sort-by = &quot; $sortBy &quot; ... /&gt; 
+
+ In our $headers property let's replace the age column for country.name and refresh the page to see the result.
+ Nice! Table component works with dot notation. 
+
+ [ ' key ' =&gt; ' age ' , ' label ' =&gt; ' Age ' , ' class ' =&gt; ' w-20 ' ] , 
+ [ ' key ' =&gt; ' country.name ' , ' label ' =&gt; ' Country ' ] , 
+
+ But, if you try to sort by the country column you will get an error . Let's fix this by using an Eloquent trick.
+
+ // It will add an extra column `country_name` on User collection
+
+ User :: query ( ) 
+
+ -&gt; withAggregate ( ' country ' , ' name ' ) 
+ -&gt; ... 
+
+ Finally, adjust the headers property to sort by the new custom column.
+
+ [ ' key ' =&gt; ' country.name ' , ' label ' =&gt; ' Country ' ] , 
+ [ ' key ' =&gt; ' country_name ' , ' label ' =&gt; ' Country ' ] , 
+
+ Pagination 
+
+ Go back to users/index.blade and use the WithPagination trait from Livewire itself, as described in
+ Livewire docs .
+
+ use Livewire \ WithPagination ; 
+
+ new class extends Component 
+
+ { 
+
+ use WithPagination ; 
+ } 
+
+ Add the with-pagination property on the x-table component.
+
+ &lt; x-table ... with-pagination &gt; 
+
+ Finally, make some changes to use an Eloquent paginated query. Notice that the return type is changed.
+
+ use Illuminate \ Pagination \ LengthAwarePaginator ; 
+
+ public function users ( ) : LengthAwarePaginator 
+ { 
+
+ return User :: query ( ) 
+
+ -&gt; withAggregate ( ' country ' , ' name ' ) 
+
+ -&gt; when ( $ this -&gt; search , fn ( Builder $ q ) =&gt; $ q -&gt; where ( ' name ' , ' like ' , &quot; % $ this -&gt; search % &quot; ) ) 
+
+ -&gt; orderBy ( ... array_values ( $ this -&gt; sortBy ) ) 
+
+ -&gt; paginate ( 5 ) ; // No more `-&gt;get()` 
+
+ } 
+
+ Clear filters 
+
+ There is a "bug" on pagination...
+
+Go to page 9. 
+
+Filter by any name you see on that page. 
+
+The list goes empty! 
+
+ Actually it is not a bug in itself , but a Laravel/Livewire pagination particularity (not maryUI) you must be aware when you change filters.
+
+ Let's fix it by using Livewire lifecycle hooks in order to reset the pagination when any component property changes. Add the following method to the example component.
+
+ // Reset pagination when any component property changes
+
+ public function updated ( $ property ) : void 
+
+ { 
+
+ if ( ! is_array ( $ property ) &amp;&amp; $ property != &quot; &quot; ) { 
+
+ $ this -&gt; resetPage ( ) ; 
+
+ } 
+
+ } 
+
+ You could improve the clear() method as well.
+
+ // Clear filters
+
+ public function clear ( ) : void 
+
+ { 
+
+ $ this -&gt; reset ( ) ; 
+
+ $ this -&gt; resetPage ( ) ; 
+ $ this -&gt; success ( ' Filters cleared. ' , position : ' toast-bottom ' ) ; 
+
+ } 
+
+ Pro tip: You could create a trait like ClearsFilters with those methods above to reuse the logic. 
+
+ Table CSS 
+
+ You can apply CSS on the table headers and make it responsive just like that. Check it at mobile size.
+
+ [ ' key ' =&gt; ' country_name ' , ' label ' =&gt; ' Country ' ] , 
+ [ ' key ' =&gt; ' country_name ' , ' label ' =&gt; ' Country ' , ' class ' =&gt; ' hidden lg:table-cell ' ] , 
+
+ You can even decorate rows and cells with custom CSS, in addition to use custom slots to override cells.
+ You can do even more with maryUI tables. Check the docs for more.
+
+ Header component 
+
+ Header docs
+
+ Check the example's source code to see how useful the x-header component is. It includes a progress indicator, has built-in layout
+ and is responsive. Check it at mobile size.
+
+ {{-- Let's change the title --}} 
+
+ &lt; x-header title = &quot; Users &quot; separator progress-indicator ... /&gt; 
+
+ Toast component 
+
+ Toast docs
+
+ The maryUI installer already set up x-toast for you.
+
+ Let's replace entirely the delete() method.
+
+ public function delete ( User $ user ) : void 
+
+ { 
+
+ $ user -&gt; delete ( ) ; 
+
+ $ this -&gt; warning ( &quot; $ user -&gt; name deleted &quot; , ' Good bye! ' , position : ' toast-bottom ' ) ; 
+
+ } 
+
+ Drawer component 
+
+ Drawer docs
+
+ The x-drawer component is a great way to avoid interrupting the users flow when it is necessary to quickly execute a secondary action.
+ It comes with a handy close button and a default layout.
+
+ &lt; x-drawer wire:model = &quot; drawer &quot; title = &quot; Filters &quot; right separator with-close-button ... /&gt; 
+
+ Let's add a new filter by country .
+
+ use App \ Models \ Country ; 
+
+ new class extends Component { 
+
+ ... 
+
+ // Create a public property.
+
+ public int $ country_id = 0 ; 
+
+ // Add a condition to filter by country
+
+ public function users ( ) : LengthAwarePaginator 
+
+ { 
+
+ ... 
+
+ -&gt; when ( ... ) 
+
+ -&gt; when ( $ this -&gt; country_id , fn ( Builder $ q ) =&gt; $ q -&gt; where ( ' country_id ' , $ this -&gt; country_id ) ) 
+ ... 
+
+ } 
+
+ // Add a new property
+
+ public function with ( ) : array 
+
+ { 
+
+ return [ 
+
+ ' users ' =&gt; $ this -&gt; users ( ) , 
+
+ ' headers ' =&gt; $ this -&gt; headers ( ) , 
+
+ ' countries ' =&gt; Country :: all ( ) , 
+ ] ; 
+
+ } 
+
+ } 
+
+ Finally, place an x-select component inside the drawer, with a small CSS grid to make it look even better.
+
+ Select docs
+
+ &lt; x-drawer ... &gt; 
+
+ ...
+
+ &lt; div class = &quot; grid gap-5 &quot; &gt; 
+ &lt; x-input placeholder = &quot; Search... &quot; ... /&gt; 
+
+ &lt; x-select placeholder = &quot; Country &quot; wire:model.live = &quot; country_id &quot; :options = &quot; $countries &quot; icon = &quot; o-flag &quot; placeholder-value = &quot; 0 &quot; /&gt; 
+ &lt;/ div &gt; 
+
+ &lt;/ x-drawer &gt; 
+
+ Challenge 
+
+ Button docs
+
+ If you are using a drawer you will probably have a few more filter options.
+ In order to have a better UX it would be nice to display how many filters the user have selected.
+
+ Tip: use the button badge property and an extra method on your component to count how many filters are filled.
+
+ Before proceeding, make a local commit to keep track of what is going on. 
+
+ Setup
+
+ Updating users
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+

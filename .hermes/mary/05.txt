@@ -1,0 +1,110 @@
+
+
+ Spotlight 
+
+ Spotlight docs
+
+ Give superpowers to your users and allow them to search for anything.
+ On this example we will search only for usernames, but you can mix any type of content like other entities or even quick actions like "Create a user".
+ Check the docs for more.
+
+ Searching 
+
+ Place the spotlight tag somewhere in the main layout.
+
+ &lt; body &gt; 
+
+ ...
+
+ {{-- TOAST area --}} 
+
+ &lt; x-toast /&gt; 
+
+ {{-- Spotlight --}} 
+
+ &lt; x-spotlight /&gt; 
+ &lt;/ body &gt; 
+
+ Create an App\Support\Spotlight class with a search method that returns the result.
+
+ namespace App \ Support ; 
+
+ use App \ Models \ User ; 
+
+ use Illuminate \ Http \ Request ; 
+
+ class Spotlight 
+
+ { 
+
+ public function search ( Request $ request ) 
+
+ { 
+
+ // Filter users by name
+
+ // Transform the result to be compliant with Spotlight contract
+
+ return User :: query ( ) 
+
+ -&gt; where ( ' name ' , ' like ' , &quot; % $ request -&gt; search % &quot; ) 
+
+ -&gt; take ( 5 ) 
+
+ -&gt; get ( ) 
+
+ -&gt; map ( function ( User $ user ) { 
+
+ return [ 
+
+ ' avatar ' =&gt; $ user -&gt; avatar ?? ' /empty-user.jpg ' , 
+
+ ' name ' =&gt; $ user -&gt; name , 
+
+ ' description ' =&gt; $ user -&gt; email , 
+
+ ' link ' =&gt; &quot; /users/ { $ user -&gt; id } /edit &quot; 
+
+ ] ; 
+
+ } ) ; 
+
+ } 
+
+ } 
+
+ That is it! 
+
+ Try to hit Ctrl/Cmd + G 
+
+ Before proceeding, we recommend that you make a local commit to keep track of what is going on. 
+
+ Updating users
+
+ Authentication
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+

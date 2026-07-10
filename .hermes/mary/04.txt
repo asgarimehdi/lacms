@@ -1,0 +1,594 @@
+
+
+ Updating users 
+
+ Let's build a nice form layout that contains a file upload and cropping components!
+
+ New Components &amp; Routes 
+
+ Let's create some new components.
+
+ php artisan livewire:make pages::index # Home 
+
+ php artisan livewire:make pages::users.create # Create 
+
+ php artisan livewire:make pages::users.edit # Edit 
+
+ Before moving forward, let's adjust some routes on web.php to make naming consistent.
+
+ Route :: livewire ( ' / ' , ' pages::users.index ' ) ; 
+ Route :: livewire ( ' / ' , ' pages::index ' ) ; // Home 
+
+ Route :: livewire ( ' /users ' , ' pages::users.index ' ) ; // User (list) 
+
+ Route :: livewire ( ' /users/create ' , ' pages::users.create ' ) ; // User (create) 
+
+ Route :: livewire ( ' /users/{user}/edit ' , ' pages::users.edit ' ) ; // User (edit) 
+
+ As you can see, maryUI ships with a default app template. Make some adjustments to the menu links to add new routes and then check it in the browser .
+
+ // resources/views/layouts/app.blade.php
+
+ &lt; x-menu-item title = &quot; Hello &quot; icon = &quot; o-sparkles &quot; link = &quot; / &quot; /&gt; 
+ &lt; x-menu-item title = &quot; Home &quot; icon = &quot; o-sparkles &quot; link = &quot; / &quot; /&gt; 
+ &lt; x-menu-item title = &quot; Users &quot; icon = &quot; o-users &quot; link = &quot; /users &quot; /&gt; 
+
+ Menu docs
+
+ Here, we are making use of the x-menu and x-menu-item components. They work seamless among the default sidebar shipped by maryUI.
+ Additionally, it keeps the correct menu item selected based on the user's current route and sub-routes, as they navigate deeply.
+
+ Form components 
+
+ Form docs
+
+ Input docs
+
+ Select docs
+
+ First, we need to create a link from our table to the new edit component. This is easier than anything with the x-table component.
+ Go back to users/index and make the following change:
+
+ {{-- livewire/users/index.blade.php --}} 
+
+ &lt; x-table ... link = &quot; users/{id}/edit &quot; &gt; 
+
+ {{-- You could pass any parameter based on model columns' name --}} 
+
+ &lt; x-table ... link = &quot; users/{id}/edit?name={name}&amp;city={city.name} &quot; &gt; 
+
+ After that change you can see an empty screen when visiting the users/edit component.
+ However, it means that the link is working as expected, as you can see in the browser's url.
+
+ Now, in the users/edit component, add User as a component parameter.
+
+ use App \ Models \ User ; 
+ use Mary \ Traits \ Toast ; 
+
+ new class extends Component { 
+
+ // We will use it later 
+
+ use Toast ; 
+
+ // Component parameter 
+
+ public User $ user ; 
+
+ } 
+
+ Let's add an x-header in the blade section to test if the User parameter is working.
+ And It will work because of the Laravel route binding mechanism for models.
+
+ &lt; div &gt; 
+
+ // 
+ &lt; x-header title = &quot; Update {{ $ user -&gt; name }} &quot; separator /&gt; 
+ &lt;/ div &gt; 
+
+ Now, let's add the component properties that represent the User model properties, with their respective Livewire validation rules.
+ Additionally, we will include an extra property using the with() method to get all available countries.
+
+ use Livewire \ Attributes \ Rule ; 
+ use App \ Models \ Country ; 
+
+ new class extends Component { 
+
+ use Toast ; 
+
+ public User $ user ; 
+
+ // You could use Livewire &quot;form object&quot; instead.
+
+ #[ Rule ( ' required ' ) ] 
+ public string $ name = ' ' ; 
+
+ #[ Rule ( ' required|email ' ) ] 
+
+ public string $ email = ' ' ; 
+
+ // Optional
+
+ #[ Rule ( ' sometimes ' ) ] 
+
+ public ? int $ country_id = null ; 
+
+ // We also need this to fill Countries combobox on upcoming form
+
+ public function with ( ) : array 
+ { 
+
+ return [ 
+
+ ' countries ' =&gt; Country :: all ( ) 
+
+ ] ; 
+
+ } 
+
+ } 
+
+ Now, move to the blade section and let's add the UI components.
+ You will discover in the docs that most of the components have a set of available properties and slots that will make things easier for you.
+
+ &lt; div &gt; 
+
+ &lt; x-header title = &quot; Update {{ $ user -&gt; name }} &quot; separator /&gt; 
+
+ &lt; x-form wire:submit = &quot; save &quot; &gt; 
+ &lt; x-input label = &quot; Name &quot; wire:model = &quot; name &quot; /&gt; 
+
+ &lt; x-input label = &quot; Email &quot; wire:model = &quot; email &quot; /&gt; 
+
+ &lt; x-select label = &quot; Country &quot; wire:model = &quot; country_id &quot; :options = &quot; $countries &quot; placeholder = &quot; --- &quot; /&gt; 
+
+ &lt; x-slot:actions &gt; 
+
+ &lt; x-button label = &quot; Cancel &quot; link = &quot; /users &quot; /&gt; 
+
+ {{-- The important thing here is `type=&quot;submit&quot;` --}} 
+
+ {{-- The spinner property is nice! --}} 
+
+ &lt; x-button label = &quot; Save &quot; icon = &quot; o-paper-airplane &quot; spinner = &quot; save &quot; type = &quot; submit &quot; class = &quot; btn-primary &quot; /&gt; 
+
+ &lt;/ x-slot:actions &gt; 
+
+ &lt;/ x-form &gt; 
+
+ &lt;/ div &gt; 
+
+ Check in the browser if it is working... and if the form is not filled. 
+
+ We can "fix" this by using the Livewire mount() method and its handy fill() method to fill
+ automatically all the component's properties that match with the target model fields.
+
+ public function mount ( ) : void 
+
+ { 
+
+ $ this -&gt; fill ( $ this -&gt; user ) ; 
+
+ } 
+
+ Of course if you hit the "Save" button you get an error , because we don't have the save() method in place.
+ So, let's add it.
+
+ public function save ( ) : void 
+
+ { 
+
+ // Validate
+
+ $ data = $ this -&gt; validate ( ) ; 
+
+ // Update
+
+ $ this -&gt; user -&gt; update ( $ data ) ; 
+
+ // You can toast and redirect to any route
+
+ $ this -&gt; success ( ' User updated with success. ' , redirectTo : ' /users ' ) ; 
+
+ } 
+
+ File component 
+
+ File docs
+
+ Let's make it cool and add a user avatar.
+
+ Notice we added the users.avatar column in the migration files during the Bootcamp setup.
+
+ In order to upload files with Laravel remember you need to create a storage link to make the local disk available.
+
+ php artisan storage:link
+
+ Add a new $photo property to store the temporary file upload and use the WithFileUploads 
+ trait from Livewire itself, as described in its docs.
+
+ use Livewire \ WithFileUploads ; 
+
+ new class extends Component { 
+
+ use Toast , WithFileUploads ; 
+
+ ... 
+
+ #[ Rule ( ' nullable|image|max:1024 ' ) ] 
+ public $ photo ; 
+
+ } 
+
+ Now, let's add the cool x-file component.
+ In this case, we are using its default slot to display an image instead of the default browser's file input field.
+
+ &lt; x-form wire:submit = &quot; save &quot; &gt; 
+
+ &lt; x-file label = &quot; Avatar &quot; wire:model = &quot; photo &quot; accept = &quot; image/png, image/jpeg &quot; &gt; 
+ &lt; img src = &quot; {{ $ user -&gt; avatar ?? ' /empty-user.jpg ' }} &quot; class = &quot; h-36 rounded-lg &quot; /&gt; 
+
+ &lt;/ x-file &gt; 
+
+ &lt; x-input label = &quot; Name &quot; ... /&gt; 
+
+ ...
+
+ &lt;/ x-form &gt; 
+
+ As you can see above, we display a generic image as a placeholder if the user doesn't have an avatar.
+ We stored it for you at your-app/public/empty-user.jpg during the Bootcamp setup.
+
+ If you select an image and hit "Save" of course the image won't be uploaded. 
+ There are certainly many ways to do it, but here is a way to get started.
+
+ public function save ( ) 
+
+ { 
+
+ $ data = $ this -&gt; validate ( ) ; 
+
+ $ this -&gt; user -&gt; update ( $ data ) ; 
+
+ // Upload file and save the avatar `url` on User model
+
+ if ( $ this -&gt; photo ) { 
+ $ url = $ this -&gt; photo -&gt; store ( ' users ' , ' public ' ) ; 
+
+ $ this -&gt; user -&gt; update ( [ ' avatar ' =&gt; &quot; /storage/ $ url &quot; ] ) ; 
+
+ } 
+
+ $ this -&gt; success ( ' User updated. ' , redirectTo : ' /users ' ) ; 
+
+ } 
+
+ It works! 
+
+ And how about cropping the avatar image?
+
+ First, add Cropper.js.
+
+ {{-- /resources/views/components/layouts/app.blade.php --}} 
+
+ &lt; head &gt; 
+
+ ...
+
+ {{-- Cropper.js --}} 
+
+ &lt; script src = &quot; https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js &quot; &gt; &lt; / script &gt; 
+
+ &lt; link rel = &quot; stylesheet &quot; href = &quot; https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css &quot; /&gt; 
+
+ &lt;/ head &gt; 
+
+ Then you can use the crop-after-change property and you are done! 
+
+ &lt; x-file ... crop-after-change &gt; 
+
+ Better layout 
+
+ That previous form we built looks a bit ugly because all the default components use the full width available on the screen. Here is a dirty
+ trick we use on all maryUI demos.
+ Just place a nice image on the right side.
+
+ &lt; div &gt; 
+
+ &lt; x-header title = &quot; Update {{ $ user -&gt; name }} &quot; separator /&gt; 
+
+ &lt;!-- Grid stuff from Tailwind --&gt; 
+
+ &lt; div class = &quot; grid gap-5 lg:grid-cols-2 &quot; &gt; 
+ &lt; div &gt; 
+
+ &lt; x-form wire:submit = &quot; save &quot; &gt; 
+
+ ...
+
+ &lt;/ x-form &gt; 
+
+ &lt;/ div &gt; 
+ &lt; div &gt; 
+
+ {{-- Get a nice picture from `StorySet` web site --}} 
+
+ &lt; img src = &quot; /edit-form.png &quot; width = &quot; 300 &quot; class = &quot; mx-auto &quot; /&gt; 
+
+ &lt;/ div &gt; 
+
+ &lt;/ div &gt; 
+
+ &lt;/ div &gt; 
+
+ Choices component 
+
+ Choices docs
+
+ This component is intended to be used for building complex selection interfaces for single and multiple values.
+ It also supports a frontend or server values search .
+
+ Remember that in our data model we have a many-to-many relationship between User and
+ Language .
+
+ Let's adjust our component:
+
+Add a new property $my_languages to hold the selected languages. 
+
+Fill $my_languages with the user languages using the mount() method. 
+
+Adjust the save() method to store the multi selection. 
+
+Add an extra property languages to list all available languages. 
+
+ use App \ Models \ Language ; 
+ ... 
+
+ new class extends Component { 
+
+ ... 
+
+ // Selected languages 
+
+ #[ Rule ( ' required ' ) ] 
+
+ public array $ my_languages = [ ] ; 
+
+ ... 
+
+ public function mount ( ) : void 
+
+ { 
+
+ $ this -&gt; fill ( $ this -&gt; user ) ; 
+
+ // Fill the selected languages property 
+
+ $ this -&gt; my_languages = $ this -&gt; user -&gt; languages -&gt; pluck ( ' id ' ) -&gt; all ( ) ; 
+
+ } 
+
+ public function save ( ) 
+
+ { 
+
+ ... 
+
+ $ this -&gt; user -&gt; update ( $ data ) ; 
+
+ // Sync selection 
+
+ $ this -&gt; user -&gt; languages ( ) -&gt; sync ( $ this -&gt; my_languages ) ; 
+
+ ... 
+
+ } 
+
+ public function with ( ) : array 
+
+ { 
+
+ return [ 
+
+ ' countries ' =&gt; Country :: all ( ) , 
+
+ ' languages ' =&gt; Language :: all ( ) , // Available Languages 
+
+ ] ; 
+
+ } 
+
+ } 
+
+ On blade section we will use the x-choices-offline component variation to easily implement a multi selection feature.
+
+ &lt; x-select label = &quot; Country &quot; ... /&gt; 
+
+ {{-- Multi selection --}} 
+ &lt; x-choices-offline 
+
+ label = &quot; My languages &quot; 
+
+ wire:model = &quot; my_languages &quot; 
+
+ :options = &quot; $languages &quot; 
+
+ searchable /&gt; 
+
+ Pro tip: for larger lists use the x-choices component variation. 
+
+ Rich Text Editor component 
+
+ Rich Text Editor docs
+
+ This component is a wrapper around TinyMCE, and it automatically uploads images and files to local 
+ or S3 disks.
+
+ Create an account on the TinyMCE website and replace YOUR-KEY-HERE with your key in the url below.
+ Also remember to add your local address on the allowed domains list.
+
+ {{-- /resources/views/layouts/app.blade.php --}} 
+
+ &lt; head &gt; 
+
+ ...
+
+ {{-- TinyMCE --}} 
+
+ &lt; script src = &quot; https://cdn.tiny.cloud/1/YOUR-KEY-HERE/tinymce/6/tinymce.min.js &quot; referrerpolicy = &quot; origin &quot; &gt; &lt; / script &gt; 
+
+ &lt;/ head &gt; 
+
+ If you don't want to rely on cloud setup, just download TinyMCE SDK and self-host the source code.
+
+ {{-- Check TinyMCE dos for self-hosted version --}} 
+
+ &lt; script src = &quot; /tinymce/tinymce.min.js &quot; referrerpolicy = &quot; origin &quot; &gt; &lt; / script &gt; 
+
+ Add a $bio property in the component, since we added the users.bio column during the Bootcamp setup.
+
+ new class extends Component { 
+
+ ... 
+
+ // Optional 
+
+ #[ Rule ( ' sometimes ' ) ] 
+
+ public ? string $ bio = null ; 
+
+ ... 
+
+ } 
+
+ And easily add the x-editor component.
+
+ &lt; x-choices-offline ... /&gt; 
+
+ &lt; x-editor wire:model = &quot; bio &quot; label = &quot; Biography &quot; hint = &quot; The great biography &quot; /&gt; 
+
+ Uploading images only works for authenticated users on your app. We will implement it on last section of the Bootcamp. 
+
+ Better layout (2) 
+
+ If you have a massive amount of fields, another trick is to create sections using Tailwind grid classes,
+ like the example below, for clear group related information.
+ This is just another alternative, so use the one that works best for you.
+
+ &lt; div &gt; 
+
+ &lt; x-header title = &quot; Update {{ $ user -&gt; name }} &quot; separator /&gt; 
+
+ &lt; x-form wire:submit = &quot; save &quot; &gt; 
+
+ {{-- Basic section --}} 
+ &lt; div class = &quot; lg:grid grid-cols-5 &quot; &gt; 
+
+ &lt; div class = &quot; col-span-2 &quot; &gt; 
+
+ &lt; x-header title = &quot; Basic &quot; subtitle = &quot; Basic info from user &quot; size = &quot; text-lg &quot; /&gt; 
+
+ &lt;/ div &gt; 
+
+ &lt; div class = &quot; col-span-3 grid gap-3 &quot; &gt; 
+
+ ... {{-- some fields here --}} 
+
+ &lt;/ div &gt; 
+
+ &lt;/ div &gt; 
+
+ {{-- Details section --}} 
+
+ &lt; hr class = &quot; my-5 border-base-300 &quot; /&gt; 
+
+ &lt; div class = &quot; lg:grid grid-cols-5 &quot; &gt; 
+
+ &lt; div class = &quot; col-span-2 &quot; &gt; 
+
+ &lt; x-header title = &quot; Details &quot; subtitle = &quot; More about the user &quot; size = &quot; text-lg &quot; /&gt; 
+
+ &lt;/ div &gt; 
+
+ &lt; div class = &quot; col-span-3 grid gap-3 &quot; &gt; 
+
+ ... {{-- another fields here --}} 
+
+ &lt;/ div &gt; 
+
+ &lt;/ div &gt; 
+
+ &lt; x-slot:actions &gt; 
+
+ ... {{-- form actions --}} 
+
+ &lt;/ x-slot:actions &gt; 
+
+ &lt;/ x-form &gt; 
+
+ &lt;/ div &gt; 
+
+ Display the avatar on Table component 
+
+ Avatar docs
+
+ Move back to users/index and add a new column in the $headers property.
+
+ [ ' key ' =&gt; ' avatar ' , ' label ' =&gt; ' ' , ' class ' =&gt; ' w-1 ' ] , 
+ [ ' key ' =&gt; ' id ' , ' label ' =&gt; ' # ' , ' class ' =&gt; ' w-1 ' ] , 
+
+ Now, let's customize the table rows with the special &#64;scope directive. You can place anything here, check Table docs for more.
+
+ &lt; x-table ... &gt; 
+
+ @scope ( ' cell_avatar ' , $ user ) 
+ &lt; x-avatar image = &quot; {{ $ user -&gt; avatar ?? ' /empty-user.jpg ' }} &quot; class = &quot; !w-10 !h-10 &quot; /&gt; 
+
+ @endscope 
+
+ &lt;/ x-table &gt; 
+
+ Challenge 
+
+ We will not show you the users/create component because it is pretty much the same as users/edit , right?
+
+ Put a "create" button now and go ahead and implement it!
+
+ &lt; x-slot:actions &gt; 
+
+ &lt; x-button label = &quot; Filters &quot; ... /&gt; 
+
+ &lt; x-button label = &quot; Create &quot; link = &quot; /users/create &quot; responsive icon = &quot; o-plus &quot; class = &quot; btn-primary &quot; /&gt; 
+ &lt;/ x-slot:actions &gt; 
+
+ Before proceeding, we recommend that you make a local commit to keep track of what is going on. 
+
+ List users
+
+ Spotlight
+
+ Made with
+
+ by
+ Robson Tenório and contributors .
+
+*_summary::after]:!hidden [&_.mary-hideable]:!hidden [&_.display-when-collapsed]:!block [&_.hidden-when-collapsed]:!hidden'
+ : '!w-[270px] [&>*_summary::after]:!block [&_.mary-hideable]:!block [&_.hidden-when-collapsed]:!block [&_.display-when-collapsed]:!hidden'"
+
+ class="flex flex-col !transition-all !duration-100 ease-out overflow-x-hidden overflow-y-auto h-screen w-[270px] [&amp;&gt;*_summary::after]:block [&amp;_.mary-hideable]:block [&amp;_.hidden-when-collapsed]:block [&amp;_.display-when-collapsed]:hidden lg:h-[calc(100vh-65px)] bg-base-100" drawer="main-drawer"
+ >
+
+ Bootcamp
+
+ Setup
+
+ Listing users
+
+ Updating users
+
+ Spotlight
+
+ Authentication
+
+ A wrap
+
