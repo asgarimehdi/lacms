@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::livewire('/', 'public.home-page')->name('home');
+Route::livewire('/', 'welcome')->name('home');
 
 // CMS Routes — protected by auth middleware
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
