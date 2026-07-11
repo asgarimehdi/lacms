@@ -25,11 +25,6 @@ new class extends Component
             ]);
         }
     }
-
-    public function render()
-    {
-        return view('welcome');
-    }
 }
 ?>
 
