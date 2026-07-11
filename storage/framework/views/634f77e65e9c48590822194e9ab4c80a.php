@@ -204,10 +204,34 @@ new class extends Component {
 <?php unset($__componentOriginal0e14fd8172e5b046fca572d6ea8445eb); ?>
 <?php endif; ?>
 
-            <div class="mt-4">
+            <div class="mt-4" x-data="{ ready: false }" x-init="ready = true">
                 <label class="label"><span class="label-text"><?php echo e(__('cms.content')); ?></span></label>
-                <input type="hidden" wire:model="content" />
-                <trix-editor x-data="{ initialized: false }" x-on:trix-initialize="initialized = true" x-on:trix-change="$wire.content = $event.target.value" wire:ignore input="content" class="min-h-[300px] prose prose-sm max-w-none"></trix-editor>
+                <input type="hidden" wire:model="content" id="post-content" />
+                <div x-show="ready" data-editorjs="post-content" class="min-h-[400px] border border-base-300 rounded-lg p-4 prose prose-sm max-w-none bg-base-100"></div>
+                <div x-show="!ready" class="min-h-[400px] border border-base-300 rounded-lg bg-base-300 animate-pulse flex items-center justify-center">
+                    <?php if (isset($component)) { $__componentOriginalce0070e6ae017cca68172d0230e44821 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalce0070e6ae017cca68172d0230e44821 = $attributes; } ?>
+<?php $component = Mary\View\Components\Icon::resolve(['name' => 'o-cube'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('icon'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Mary\View\Components\Icon::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-12 h-12 text-base-content/20']); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalce0070e6ae017cca68172d0230e44821)): ?>
+<?php $attributes = $__attributesOriginalce0070e6ae017cca68172d0230e44821; ?>
+<?php unset($__attributesOriginalce0070e6ae017cca68172d0230e44821); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalce0070e6ae017cca68172d0230e44821)): ?>
+<?php $component = $__componentOriginalce0070e6ae017cca68172d0230e44821; ?>
+<?php unset($__componentOriginalce0070e6ae017cca68172d0230e44821); ?>
+<?php endif; ?>
+                </div>
             </div>
 
             <?php if (isset($component)) { $__componentOriginal4d998faba5dd57796d3a034a63c7750c = $component; } ?>

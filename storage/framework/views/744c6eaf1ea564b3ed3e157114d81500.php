@@ -7,7 +7,6 @@
     <title><?php echo e(isset($title) ? $title.' - '.config('app.name') : config('app.name')); ?></title>
 
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/2.0.8/trix.min.css">
 </head>
 <body class="min-h-screen font-sans antialiased bg-base-200">
 
