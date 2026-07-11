@@ -1,12 +1,15 @@
 <?php
 
+use App\Livewire\Public\BlogShow;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
+use Livewire\Livewire;
 
 beforeEach(function () {
     // Fresh database for each test
@@ -80,6 +83,19 @@ describe('Public Blog Routes', function () {
         $response = $this->get('/blog/'.$this->post->slug);
         $response->assertSee($this->category->name);
         $response->assertSee($this->tag->name);
+    });
+
+    it('submits a comment that requires approval', function () {
+        $post = Post::where('is_published', true)->first();
+        Livewire::test(BlogShow::class, ['post' => $post])
+            ->set('author_name', 'تست کامنت')
+            ->set('author_email', 'commenter@example.com')
+            ->set('body', 'این یک دیدگاه تستی برای بررسی عملکرد سیستم است')
+            ->call('submitComment');
+
+        $comment = Comment::where('author_name', 'تست کامنت')->first();
+        expect($comment)->not->toBeNull();
+        expect($comment->is_approved)->toBeFalse();
     });
 });
 
