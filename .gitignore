@@ -1,5 +1,6 @@
 # Laravel
 /.env
+/.grok
 /.env.backup
 /.env.production
 /.phpunit.result.cache

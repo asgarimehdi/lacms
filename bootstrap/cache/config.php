@@ -691,6 +691,18 @@
       ),
     ),
   ),
+  'mary' => 
+  array (
+    'prefix' => '',
+    'route_prefix' => '',
+    'components' => 
+    array (
+      'spotlight' => 
+      array (
+        'class' => 'App\\Support\\Spotlight',
+      ),
+    ),
+  ),
   'queue' => 
   array (
     'default' => 'database',
@@ -945,18 +957,6 @@
       'max_nesting_depth' => 10,
       'max_calls' => 50,
       'max_components' => 200,
-    ),
-  ),
-  'mary' => 
-  array (
-    'prefix' => '',
-    'route_prefix' => '',
-    'components' => 
-    array (
-      'spotlight' => 
-      array (
-        'class' => 'App\\Support\\Spotlight',
-      ),
     ),
   ),
   'tinker' => 

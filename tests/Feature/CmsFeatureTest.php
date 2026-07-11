@@ -62,7 +62,7 @@ it('allows authenticated users to view admin pages', function () {
 it('renders login and register pages without auth', function () {
     $this->get('/login')->assertOk();
     $this->get('/register')->assertOk();
-    $this->get('/')->assertOk();
+    $this->get('/')->assertRedirect('/login');
 });
 
 it('seeds tags with auto-slug generation', function () {

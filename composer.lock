@@ -2597,16 +2597,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.13.0",
+            "version": "3.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "40f6618f052df16b545f626fbf9a878e6497d16a"
+                "reference": "2937ad3d1d2c506fd2bc97d571438a95641f44e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/40f6618f052df16b545f626fbf9a878e6497d16a",
-                "reference": "40f6618f052df16b545f626fbf9a878e6497d16a",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/2937ad3d1d2c506fd2bc97d571438a95641f44e2",
+                "reference": "2937ad3d1d2c506fd2bc97d571438a95641f44e2",
                 "shasum": ""
             },
             "require": {
@@ -2698,7 +2698,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-18T13:49:15+00:00"
+            "time": "2026-07-09T18:23:49+00:00"
         },
         {
             "name": "nette/schema",
@@ -3768,16 +3768,16 @@
         },
         {
             "name": "robsontenorio/mary",
-            "version": "2.9.1",
+            "version": "2.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/robsontenorio/mary.git",
-                "reference": "9f4c0184b1d9aab2799ccb5d9d296af5aaca2e2f"
+                "reference": "a2e25107ca4a165394c7903b42cd955d3ef4925f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robsontenorio/mary/zipball/9f4c0184b1d9aab2799ccb5d9d296af5aaca2e2f",
-                "reference": "9f4c0184b1d9aab2799ccb5d9d296af5aaca2e2f",
+                "url": "https://api.github.com/repos/robsontenorio/mary/zipball/a2e25107ca4a165394c7903b42cd955d3ef4925f",
+                "reference": "a2e25107ca4a165394c7903b42cd955d3ef4925f",
                 "shasum": ""
             },
             "require": {
@@ -3842,7 +3842,7 @@
             ],
             "support": {
                 "issues": "https://github.com/robsontenorio/mary/issues",
-                "source": "https://github.com/robsontenorio/mary/tree/2.9.1"
+                "source": "https://github.com/robsontenorio/mary/tree/2.9.3"
             },
             "funding": [
                 {
@@ -3850,7 +3850,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-08T17:12:13+00:00"
+            "time": "2026-07-10T15:57:52+00:00"
         },
         {
             "name": "symfony/clock",

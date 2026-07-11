@@ -1,11 +1,11 @@
-<x-mary-card>
+<x-card>
     <div class="text-center mb-6">
         <h1 class="text-2xl font-bold">ورود به پنل مدیریت</h1>
         <p class="text-gray-500 mt-2">اطلاعات حساب خود را وارد کنید</p>
     </div>
 
     <form wire:submit="login" class="space-y-4">
-        <x-mary-input 
+        <x-input 
             label="ایمیل" 
             wire:model="email" 
             type="email" 
@@ -14,7 +14,7 @@
             icon="o-envelope"
         />
         
-        <x-mary-password 
+        <x-password 
             label="رمز عبور" 
             wire:model="password" 
             placeholder="********"
@@ -23,11 +23,11 @@
         />
         
         <div class="flex items-center justify-between">
-            <x-mary-checkbox label="مرا به خاطر بسپار" wire:model="remember" />
+            <x-checkbox label="مرا به خاطر بسپار" wire:model="remember" />
             <a href="#" class="text-sm text-primary hover:underline">فراموشی رمز عبور؟</a>
         </div>
         
-        <x-mary-button 
+        <x-button 
             type="submit" 
             label="ورود" 
             icon="o-arrow-right-start-on-rectangle" 
@@ -36,5 +36,5 @@
         />
     </form>
 
-    <x-mary-errors icon="o-exclamation-triangle" class="my-4" />
-</x-mary-card>
+    <x-errors icon="o-exclamation-triangle" class="my-4" />
+</x-card>
