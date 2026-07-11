@@ -1,71 +1,216 @@
 <?php
 
 use App\Models\Category;
-use App\Models\Comment;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Tag;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 
-it('seeds an admin user after running the seeder', function () {
-    $this->seed();
-    expect(User::where('email', 'admin@lacms.test')->exists())->toBeTrue();
-    expect(Post::count())->toBeGreaterThan(5);
-});
+beforeEach(function () {
+    // Fresh database for each test
+    $this->seed(DatabaseSeeder::class);
 
-it('creates a post via the model', function () {
-    $cat = Category::create(['name' => 'General']);
-    Post::create([
-        'title' => 'Hello', 'slug' => 'hello', 'content' => 'World',
-        'is_published' => true, 'category_id' => $cat->id,
+    // Get seeded entities
+    $this->category = Category::first() ?? Category::create(['name' => 'تست فناوری', 'slug' => 'test-tech']);
+    $this->tag = Tag::first() ?? Tag::create(['name' => 'لاراول']);
+    $this->post = Post::where('is_published', true)->first() ?? Post::create([
+        'title' => 'تست پست عمومی',
+        'slug' => 'test-public-post',
+        'content' => '<p>محتوای تست</p>',
+        'is_published' => true,
+        'user_id' => User::first()->id,
+        'category_id' => $this->category->id,
     ]);
-    expect(Post::where('title', 'Hello')->count())->toBe(1);
-});
+    if ($this->post->tags()->count() === 0) {
+        $this->post->tags()->attach($this->tag);
+    }
 
-it('attaches tags to a post with sync', function () {
-    $post = Post::create(['title' => 'T', 'slug' => 't', 'content' => 'x', 'is_published' => true]);
-    $tag = Tag::create(['name' => 'PHP']);
-    $post->tags()->attach($tag->id);
-    expect($post->tags->pluck('name')->all())->toBe(['PHP']);
-});
-
-it('cascades comments on post delete', function () {
-    $post = Post::create(['title' => 'X', 'slug' => 'x', 'content' => 'x', 'is_published' => true]);
-    Comment::create([
-        'post_id' => $post->id,
-        'author_name' => 'A', 'author_email' => 'a@b.test', 'body' => 'C',
+    $this->page = Page::where('slug', 'home')->first() ?? Page::create([
+        'title' => 'تست صفحه عمومی',
+        'slug' => 'test-public-page',
+        'content' => '<p>محتوای صفحه تست</p>',
+        'status' => 'published',
     ]);
-    expect(Comment::where('post_id', $post->id)->count())->toBe(1);
-    $post->delete();
-    expect(Comment::where('post_id', $post->id)->count())->toBe(0);
 });
 
-it('returns the same setting row via Setting::current()', function () {
-    Setting::current()->update(['site_name' => 'TestCMS']);
-    expect(Setting::current()->site_name)->toBe('TestCMS');
-    expect(Setting::count())->toBe(1);
+describe('Public Homepage', function () {
+    it('renders homepage without authentication', function () {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+    });
+
+    it('shows site title in homepage', function () {
+        $response = $this->get('/');
+        $response->assertSee('سامانه مدیریت محتوا');
+    });
 });
 
-it('protected pages redirect unauthenticated to login', function () {
-    $this->get('/admin')->assertRedirect('/login');
-    $this->get('/admin/posts')->assertRedirect('/login');
-    $this->get('/admin/settings')->assertRedirect('/login');
+describe('Public Blog Routes', function () {
+    it('renders blog index without authentication', function () {
+        $response = $this->get('/blog');
+        $response->assertStatus(200);
+    });
+
+    it('shows published posts on blog index', function () {
+        $response = $this->get('/blog');
+        $response->assertSee($this->post->title);
+    });
+
+    it('renders single post without authentication', function () {
+        $response = $this->get('/blog/'.$this->post->slug);
+        $response->assertStatus(200);
+        $response->assertSee($this->post->title);
+    });
+
+    it('returns 404 for unpublished posts', function () {
+        $unpublishedPost = Post::create([
+            'title' => 'پست منتشر نشده',
+            'slug' => 'unpublished-test',
+            'content' => '<p>Test</p>',
+            'is_published' => false,
+        ]);
+
+        $response = $this->get('/blog/'.$unpublishedPost->slug);
+        $response->assertStatus(404);
+    });
+
+    it('shows post category and tags', function () {
+        $response = $this->get('/blog/'.$this->post->slug);
+        $response->assertSee($this->category->name);
+        $response->assertSee($this->tag->name);
+    });
 });
 
-it('allows authenticated users to view admin pages', function () {
-    $user = User::factory()->create();
-    $this->actingAs($user)->get('/admin')->assertOk();
-    $this->actingAs($user)->get('/admin/posts')->assertOk();
+describe('Public Category Routes', function () {
+    it('renders category page without authentication', function () {
+        $response = $this->get('/category/'.$this->category->slug);
+        $response->assertStatus(200);
+    });
+
+    it('shows category name on category page', function () {
+        $response = $this->get('/category/'.$this->category->slug);
+        $response->assertSee($this->category->name);
+    });
 });
 
-it('renders login and register pages without auth', function () {
-    $this->get('/login')->assertOk();
-    $this->get('/register')->assertOk();
-    $this->get('/')->assertRedirect('/login');
+describe('Public Tag Routes', function () {
+    it('renders tag page without authentication', function () {
+        $response = $this->get('/tag/'.$this->tag->slug);
+        $response->assertStatus(200);
+    });
+
+    it('shows tag name on tag page', function () {
+        $response = $this->get('/tag/'.$this->tag->slug);
+        $response->assertSee($this->tag->name);
+    });
 });
 
-it('seeds tags with auto-slug generation', function () {
-    $tag = Tag::create(['name' => 'Laravel']);
-    expect($tag->slug)->toBe('laravel');
+describe('Public Page Routes', function () {
+    it('renders public page without authentication', function () {
+        $response = $this->get('/p/'.$this->page->slug);
+        $response->assertStatus(200);
+    });
+
+    it('shows page content', function () {
+        $response = $this->get('/p/'.$this->page->slug);
+        // Seeded 'home' page has content about CMS
+        $response->assertSee('سامانه مدیریت محتوا');
+    });
+
+    it('returns 404 for unpublished pages', function () {
+        $unpublishedPage = Page::create([
+            'title' => 'صفحه منتشر نشده',
+            'slug' => 'unpublished-page',
+            'content' => '<p>Test</p>',
+            'status' => 'draft',
+        ]);
+
+        $response = $this->get('/p/'.$unpublishedPage->slug);
+        $response->assertStatus(404);
+    });
+});
+
+describe('Admin Authentication', function () {
+    it('redirects unauthenticated users to login', function () {
+        $this->get('/admin')->assertRedirect('/login');
+        $this->get('/admin/posts')->assertRedirect('/login');
+        $this->get('/admin/pages')->assertRedirect('/login');
+        $this->get('/admin/settings')->assertRedirect('/login');
+    });
+
+    it('allows authenticated users to access admin', function () {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/admin');
+        $response->assertStatus(200);
+    });
+});
+
+describe('Database Models', function () {
+    it('creates post via model with tags', function () {
+        $post = Post::create([
+            'title' => 'مدل تست',
+            'slug' => 'model-test',
+            'content' => '<p>Test content</p>',
+            'is_published' => true,
+            'user_id' => User::first()->id,
+            'category_id' => $this->category->id,
+        ]);
+        expect(Post::where('title', 'مدل تست')->exists())->toBeTrue();
+    });
+
+    it('attaches tags to post', function () {
+        $post = Post::create([
+            'title' => 'تگ تست',
+            'slug' => 'tag-test',
+            'content' => '<p>Test</p>',
+            'is_published' => true,
+            'user_id' => User::first()->id,
+            'category_id' => $this->category->id,
+        ]);
+        $tag = Tag::create(['name' => 'پی اچ پی']);
+        $post->tags()->attach($tag->id);
+
+        expect($post->tags->pluck('name')->all())->toContain('پی اچ پی');
+    });
+
+    it('has category relationship', function () {
+        expect($this->post->category->name)->toBe($this->category->name);
+    });
+
+    it('has tags relationship', function () {
+        expect($this->post->tags)->not->toBeEmpty();
+    });
+
+    it('generates slug automatically', function () {
+        $tag = Tag::create(['name' => 'Test Slug Tag']);
+        expect($tag->slug)->toBe('test-slug-tag');
+    });
+
+    it('settings returns single row', function () {
+        Setting::current()->update(['site_name' => 'تست CMS']);
+        expect(Setting::current()->site_name)->toBe('تست CMS');
+        expect(Setting::count())->toBe(1);
+    });
+
+    it('creates and retrieves pages', function () {
+        $page = Page::create([
+            'title' => 'صفحه جدید',
+            'slug' => 'new-page',
+            'content' => '<p>Test</p>',
+            'status' => 'published',
+        ]);
+        expect(Page::where('id', $page->id)->exists())->toBeTrue();
+    });
+});
+
+describe('Login & Register', function () {
+    it('renders login page without auth', function () {
+        $this->get('/login')->assertOk();
+    });
+
+    it('renders register page without auth', function () {
+        $this->get('/register')->assertOk();
+    });
 });

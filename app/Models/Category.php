@@ -15,10 +15,8 @@ class Category extends Model
         return $this->hasMany(Post::class);
     }
 
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::creating(function ($category) {
-            $category->slug = Str::slug($category->name);
-        });
+        static::creating(fn ($category) => $category->slug = $category->slug ?: Str::slug($category->name));
     }
 }
