@@ -1,39 +1,12 @@
-<?php
-use App\Models\Post;
-use App\Models\Category;
-use Livewire\Component;
-use Mary\Traits\Toast;
-
-new class extends Component {
-    use Toast;
-
-    public function with(): array
-    {
-        return [
-            'featuredPosts' => Post::with('category')->where('is_published', true)->latest()->take(6)->get(),
-            'categories' => Category::withCount('posts')->get(),
-            'latestPost' => Post::with('category')->where('is_published', true)->latest()->first(),
-        ];
-    }
-
-    public function mount(): void
-    {
-        // nothing needed — data loaded in with()
-    }
-};
-?>
-
 <div>
-    {{-- Hero Section --}}
     <section class="relative bg-gradient-to-br from-primary/10 via-base-100 to-secondary/10 py-20 px-6">
         <div class="max-w-5xl mx-auto text-center">
-            <h1 class="text-5xl font-black mb-4">{{ __('cms.site_tagline') ?? 'مدیریت آسان محتوا') }}</h1>
+            <h1 class="text-5xl font-black mb-4">{{ __('cms.site_tagline') ?? 'مدیریت آسان محتوا' }}</h1>
             <p class="text-xl text-base-content/70 mb-8">سامانه مدیریت محتوای لاراول با لایوایر و MaryUI</p>
             <x-button label="مشاهده مقالات" icon="o-arrow-right" link="/blog" class="btn-primary btn-lg" />
         </div>
     </section>
 
-    {{-- Latest Post --}}
     @if($latestPost)
     <section class="max-w-5xl mx-auto px-6 py-12">
         <x-header title="آخرین مقاله" separator />
@@ -45,7 +18,7 @@ new class extends Component {
                 <div class="md:w-2/3 p-6">
                     <x-badge value="{{ $latestPost->category->name ?? 'دسته‌بندی' }}" class="badge-primary mb-2" />
                     <h2 class="text-2xl font-bold mb-2">{{ $latestPost->title }}</h2>
-                    <p class="text-base-content/60 line-clamp-3 mb-4">{{ Str::stripTags($latestPost->content) }}</p>
+                    <p class="text-base-content/60 line-clamp-3 mb-4">{{ strip_tags($latestPost->content) }}</p>
                     <x-button label="ادامه مطلب" link="/blog/{{ $latestPost->slug }}" icon="o-arrow-right" class="btn-sm btn-primary" />
                 </div>
             </div>
@@ -53,7 +26,6 @@ new class extends Component {
     </section>
     @endif
 
-    {{-- Featured Posts Grid --}}
     @if($featuredPosts->count() > 1)
     <section class="max-w-5xl mx-auto px-6 py-8">
         <x-header title="مقالات اخیر" separator />
@@ -64,7 +36,7 @@ new class extends Component {
                     <x-badge value="{{ $post->category->name ?? '' }}" class="badge-soft badge-primary text-xs" />
                 </x-slot:header>
                 <h3 class="font-bold text-lg mb-2 line-clamp-2">{{ $post->title }}</h3>
-                <p class="text-sm text-base-content/60 line-clamp-3 mb-4">{{ Str::stripTags($post->content) }}</p>
+                <p class="text-sm text-base-content/60 line-clamp-3 mb-4">{{ strip_tags($post->content) }}</p>
                 <x-slot:actions>
                     <x-button label="ادامه" link="/blog/{{ $post->slug }}" icon="o-arrow-right" class="btn-ghost btn-sm" />
                 </x-slot:actions>
@@ -77,7 +49,6 @@ new class extends Component {
     </section>
     @endif
 
-    {{-- Categories --}}
     @if($categories->count())
     <section class="max-w-5xl mx-auto px-6 py-8">
         <x-header title="دسته‌بندی‌ها" separator />
