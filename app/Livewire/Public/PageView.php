@@ -11,6 +11,9 @@ class PageView extends Component
 
     public function mount(Page $page): void
     {
+        if ($page->status !== 'published') {
+            abort(404);
+        }
         $this->page = $page;
     }
 
