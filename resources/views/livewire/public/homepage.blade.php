@@ -1,3 +1,65 @@
+<?php
+
+use App\Models\Category;
+use App\Models\Page;
+use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\Support\Collection;
+use Livewire\Component;
+
+new class extends Component
+{
+    public ?Page $page = null;
+
+    public Collection $featuredPosts;
+
+    public Collection $pages;
+
+    public Collection $categories;
+
+    public Collection $tags;
+
+    public bool $loaded = false;
+
+    public function mount(): void
+    {
+        $this->page = Page::where('status', 'published')
+            ->where('slug', 'home')
+            ->firstOr(fn () => Page::whereNull('parent_id')->first());
+
+        $this->featuredPosts = collect();
+        $this->pages = collect();
+        $this->categories = collect();
+        $this->tags = collect();
+    }
+
+    public function loadContent(): void
+    {
+        if ($this->loaded) {
+            return;
+        }
+
+        $this->featuredPosts = Post::where('is_published', true)
+            ->with(['category', 'tags'])
+            ->latest()
+            ->take(6)
+            ->get();
+
+        $this->pages = Page::where('status', 'published')
+            ->orderBy('sort')
+            ->get();
+
+        $this->categories = Category::withCount('posts')->get();
+        $this->tags = Tag::withCount('posts')
+            ->orderBy('posts_count', 'desc')
+            ->take(10)
+            ->get();
+
+        $this->loaded = true;
+    }
+};
+?>
+
 <div class="min-h-screen bg-base-200">
     <!-- Header -->
     <header class="bg-gradient-to-l from-primary/10 to-secondary/10 shadow-sm sticky top-0 z-50 backdrop-blur-lg bg-base-100/80">
@@ -90,7 +152,7 @@
                                         {{ $post->title }}
                                     </h3>
                                     <p class="text-sm text-base-content/60 mt-2 line-clamp-2">
-                                        {{ Str::limit(strip_tags($post->content), 100) }}
+                                        {{ \Illuminate\Support\Str::limit(strip_tags($post->content), 100) }}
                                     </p>
                                     <div class="flex items-center justify-between mt-4 text-xs text-base-content/50">
                                         @if($post->category)

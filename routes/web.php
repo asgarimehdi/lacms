@@ -1,25 +1,20 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Livewire\Public\BlogIndex;
-use App\Livewire\Public\BlogShow;
-use App\Livewire\Public\CategoryShow;
-use App\Livewire\Public\PageView;
-use App\Livewire\Public\TagShow;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Public CMS Routes — no authentication required
-Route::get('/p/{page:slug}', PageView::class)->name('public.page');
+Route::livewire('/p/{page:slug}', 'public.page-view')->name('public.page');
 
-Route::get('/blog', BlogIndex::class)->name('public.posts.index');
+Route::livewire('/blog', 'public.blog-index')->name('public.posts.index');
 
-Route::get('/blog/{post:slug}', BlogShow::class)->name('public.posts.show');
+Route::livewire('/blog/{post:slug}', 'public.blog-show')->name('public.posts.show');
 
-Route::get('/category/{category:slug}', CategoryShow::class)->name('public.categories.show');
+Route::livewire('/category/{category:slug}', 'public.category-show')->name('public.categories.show');
 
-Route::get('/tag/{tag:slug}', TagShow::class)->name('public.tags.show');
+Route::livewire('/tag/{tag:slug}', 'public.tag-show')->name('public.tags.show');
 
 // Admin Routes — protected by auth middleware
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

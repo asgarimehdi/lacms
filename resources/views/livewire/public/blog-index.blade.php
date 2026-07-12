@@ -1,3 +1,53 @@
+<?php
+
+use App\Models\Post;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\View;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+new class extends Component
+{
+    use WithPagination;
+
+    public ?string $search = '';
+
+    public ?string $category = '';
+
+    public bool $loaded = false;
+
+    public function mount(): void
+    {
+        $this->loaded = false;
+    }
+
+    public function loadContent(): void
+    {
+        $this->loaded = true;
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function getPostsProperty(): LengthAwarePaginator
+    {
+        $query = Post::where('is_published', true)->with(['category', 'tags']);
+
+        if ($this->search) {
+            $query->where('title', 'like', '%'.$this->search.'%');
+        }
+
+        if ($this->category) {
+            $query->whereHas('category', fn ($q) => $q->where('slug', $this->category));
+        }
+
+        return $query->latest()->paginate(12);
+    }
+};
+?>
+
 <div class="min-h-screen bg-base-200">
     <!-- Header -->
     <header class="bg-base-100 shadow-sm sticky top-0 z-50">
@@ -49,7 +99,7 @@
 
                         <!-- Excerpt -->
                         <p class="text-sm text-base-content/60 mt-2 line-clamp-3">
-                            {{ Str::limit(strip_tags($post->content), 120) }}
+                            {{ \Illuminate\Support\Str::limit(strip_tags($post->content), 120) }}
                         </p>
 
                         <!-- Meta -->
