@@ -21,27 +21,29 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Admin user
-        $admin = User::create([
-            'name' => 'مدیر سایت',
-            'email' => 'admin@lacms.test',
-            'password' => Hash::make('password'),
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@lacms.test'],
+            [
+                'name' => 'مدیر سایت',
+                'password' => Hash::make('password'),
+            ]
+        );
 
         // Additional users
         collect([
             ['name' => 'علی محمدی', 'email' => 'ali@example.com'],
             ['name' => 'سارا احمدی', 'email' => 'sara@example.com'],
             ['name' => 'رضا کریمی', 'email' => 'reza@example.com'],
-        ])->each(fn ($u) => User::create(array_merge($u, ['password' => Hash::make('password')])));
+        ])->each(fn ($u) => User::firstOrCreate(['email' => $u['email']], array_merge($u, ['password' => Hash::make('password')])));
 
-        // Categories (Persian) - create all first to get real IDs
-        $catTech = Category::create(['name' => 'فناوری', 'slug' => 'technology']);
-        $catLife = Category::create(['name' => 'سبک زندگی', 'slug' => 'lifestyle']);
-        $catBiz = Category::create(['name' => 'کسب و کار', 'slug' => 'business']);
-        $catHealth = Category::create(['name' => 'سلامت', 'slug' => 'health']);
-        $catEdu = Category::create(['name' => 'آموزش', 'slug' => 'education']);
-        $catTravel = Category::create(['name' => 'گردشگری', 'slug' => 'travel']);
-        $catArt = Category::create(['name' => 'هنر', 'slug' => 'art']);
+        // Categories (Persian)
+        $catTech = Category::firstOrCreate(['slug' => 'technology'], ['name' => 'فناوری']);
+        $catLife = Category::firstOrCreate(['slug' => 'lifestyle'], ['name' => 'سبک زندگی']);
+        $catBiz = Category::firstOrCreate(['slug' => 'business'], ['name' => 'کسب و کار']);
+        $catHealth = Category::firstOrCreate(['slug' => 'health'], ['name' => 'سلامت']);
+        $catEdu = Category::firstOrCreate(['slug' => 'education'], ['name' => 'آموزش']);
+        $catTravel = Category::firstOrCreate(['slug' => 'travel'], ['name' => 'گردشگری']);
+        $catArt = Category::firstOrCreate(['slug' => 'art'], ['name' => 'هنر']);
 
         // Tags (Persian)
         $tags = collect([
@@ -53,9 +55,9 @@ class DatabaseSeeder extends Seeder
             ['name' => 'وب', 'slug' => 'web'],
             ['name' => 'برنامه‌نویسی', 'slug' => 'programming'],
             ['name' => 'طراحی', 'slug' => 'design'],
-        ])->map(fn ($t) => Tag::create($t));
+        ])->map(fn ($t) => Tag::firstOrCreate(['slug' => $t['slug']], $t));
 
-        // Posts (Persian with rich content) - use real category IDs
+        // Posts (Persian with rich content)
         $posts = [
             [
                 'title' => 'مقدمه‌ای بر لاراول ۱۱',
@@ -110,30 +112,26 @@ class DatabaseSeeder extends Seeder
         foreach ($posts as $i => $post) {
             $post['slug'] = Str::slug($post['title']);
             $post['user_id'] = $admin->id;
-            $created = Post::create($post);
+            $created = Post::firstOrCreate(['title' => $post['title']], $post);
             $tagIds = $tags->count() >= 2
                 ? $tags->random(rand(1, 3))->pluck('id')
                 : $tags->pluck('id');
-            $created->tags()->attach($tagIds);
+            if ($created->wasRecentlyCreated) {
+                $created->tags()->attach($tagIds);
+            }
         }
 
         // Comments
         $firstPost = Post::first();
         if ($firstPost) {
-            Comment::create([
-                'post_id' => $firstPost->id,
-                'author_name' => 'کاربر اول',
-                'author_email' => 'user1@example.com',
-                'body' => 'مقاله بسیار مفیدی بود. ممنون از اشتراک‌گذاری.',
-                'is_approved' => true,
-            ]);
-            Comment::create([
-                'post_id' => $firstPost->id,
-                'author_name' => 'کاربر دوم',
-                'author_email' => 'user2@example.com',
-                'body' => 'لطفاً مقالات بیشتری در این زمینه بنویسید.',
-                'is_approved' => true,
-            ]);
+            Comment::firstOrCreate(
+                ['post_id' => $firstPost->id, 'author_email' => 'user1@example.com'],
+                ['author_name' => 'کاربر اول', 'body' => 'مقاله بسیار مفیدی بود. ممنون از اشتراک‌گذاری.', 'is_approved' => true]
+            );
+            Comment::firstOrCreate(
+                ['post_id' => $firstPost->id, 'author_email' => 'user2@example.com'],
+                ['author_name' => 'کاربر دوم', 'body' => 'لطفاً مقالات بیشتری در این زمینه بنویسید.', 'is_approved' => true]
+            );
         }
 
         // Pages (Persian)
@@ -146,7 +144,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($pages as $page) {
-            Page::create($page);
+            Page::firstOrCreate(['slug' => $page['slug']], $page);
         }
 
         // Settings (singleton)
