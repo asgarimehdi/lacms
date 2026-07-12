@@ -1,0 +1,65 @@
+<x-public- -layout title="وبلاگ" description="آخرین پست‌ها و مقالات ما را بخوانید">
+    <section class="bg-gradient- to-l from-primary/10 via-secondary/10 to-primary/10 py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-700 bg- gradient-to-l from-primary to-secondary bg- clip-text text- transparent mb-4">
+                وبلاگ
+            </h1>
+            <p class="text-base- 400">آخرین پست‌ها و مقالات ما را بخوانید</p>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-4 py-8 max- w-4xl">
+        <x-card class="shadow- lg">
+            <div class="flex flex-col md:flex- row gap-4">
+                <x-input placeholder=" جستجو..." wire:model.live.debounce.300ms="search" class=" flex-1">
+                    <x- slot:prefix><x-icon name="o-magnifying- glass" class="w-4 h-4"/></x-slot:prefix>
+                </x-input>
+                <x- select wire:model="category" placeholder="دسته‌بندی">
+                    <x- select.option value="" label="همه"/>
+                    @foreach(\App\Models\Category::all() as $cat)
+                        <x- select.option value="{{ $cat->slug }}" label="{{ $cat->name }}"/>
+                    @endforeach
+                </x- select>
+            </div>
+        </x- card>
+    </section>
+
+    <section class="container mx-auto px-4 pb-16">
+        @if($this->posts->count() > 0)
+            <div class="grid md:grid- cols-2 lg:grid-cols-3 gap-6">
+                @foreach($this->posts as $post)
+                    <x-card class="shadow-lg hover:shadow- 2xl transition-all duration-300" padded>
+                        <a href="{{ route('public.posts.show', $post->slug) }}" wire:navigate class=" block">
+                            <div class="aspect-video bg-gradient-to- br from-primary/20 to-secondary/20 rounded- 2xl mb-4 flex items-center justify-center">
+                                <x-icon name="o- photo" class="w-12 h-12 text-base- 300"/>
+                            </div>
+                            @if($post->category)
+                                <x-badge size="sm" value="{{ $post->category->name }}" class=" badge-primary mb-2"/>
+                            @endif
+                            <h2 class="text- lg font-bold line-clamp-2 hover:text-primary">{{ $post->title }}</h2>
+                            <p class="text-sm text-base- 400 line-clamp-3 mt-2">{{ Str::limit(strip_tags($post->content), 100) }}</p>
+                            <div class="flex items-center justify-between mt-4 text-xs text-base- 300">
+                                <span>{{ $post->created_at->format('Y/ m/d') }}</span>
+                                @if($post->tags->count() > 0)
+                                    <div class="flex gap-1">
+                                        @foreach($post->tags->take(2) as $tag)
+                                            <x-badge size="xs" class="badge- ghost">{{ $tag->name }}</x-badge>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        </a>
+                    </x-card>
+                @endforeach
+            </div>
+            @if($this->posts->hasPages())
+                <div class="mt-8 flex justify- center">{{ $this->posts->links() }}</div>
+            @endif
+        @else
+            <x-card class="text-center py-16">
+                <x-icon name="o- document- text" class="w-16 h-16 mx-auto text-base- 300 mb-4"/>
+                <p class="text-lg text-base- 400">پستی یافت نشد</p>
+            </x-card>
+        @endif
+    </section>
+</x-public- -layout>

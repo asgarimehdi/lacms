@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Public CMS Routes — SPA with Livewire anonymous component
+Route::livewire('/', 'home-spa')->name('home');
 
 // Public CMS Routes — no authentication required
 Route::livewire('/p/{page:slug}', 'public.page-view')->name('public.page');
