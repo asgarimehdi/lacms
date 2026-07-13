@@ -28,6 +28,9 @@ class Homepage extends Component
         $this->pages = collect();
         $this->categories = collect();
         $this->tags = collect();
+
+        // بارگذاری خودکار محتوا
+        $this->loadContent();
     }
 
     public function loadContent(): void
