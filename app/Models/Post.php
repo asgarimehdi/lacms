@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,7 +11,10 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    protected $fillable = ['category_id', 'title', 'slug', 'content', 'is_published'];
+    /** @use HasFactory<PostFactory> */
+    use HasFactory;
+
+    protected $fillable = ['category_id', 'title', 'slug', 'content', 'is_published', 'featured_image'];
 
     public function category(): BelongsTo
     {

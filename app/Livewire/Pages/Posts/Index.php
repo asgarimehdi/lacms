@@ -16,7 +16,7 @@ class Index extends Component
 
     public ?int $category_filter = null;
 
-    public bool $published__filter = false;
+    public bool $published_filter = false;
 
     public array $selected = [];
 
@@ -63,12 +63,19 @@ class Index extends Component
             return $this->cachedPosts;
         }
 
+        $allowedColumns = ['id', 'title', 'is_published', 'updated_at', 'created_at'];
+        $column = $this->sortBy['column'] ?? 'title';
+        $direction = $this->sortBy['direction'] ?? 'asc';
+        if (! in_array($column, $allowedColumns, true)) {
+            $column = 'title';
+        }
+
         $this->cachedPosts = Post::query()
             ->with(['category', 'tags'])
             ->when($this->search, fn ($q) => $q->where('title', 'like', "%{$this->search}%"))
             ->when($this->category_filter, fn ($q) => $q->where('category_id', $this->category_filter))
             ->when($this->published_filter !== null, fn ($q) => $q->where('is_published', $this->published_filter))
-            ->orderBy(...array_values($this->sortBy))
+            ->orderBy($column, $direction)
             ->get();
 
         return $this->cachedPosts;

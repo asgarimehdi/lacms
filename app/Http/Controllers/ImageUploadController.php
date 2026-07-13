@@ -15,7 +15,7 @@ class ImageUploadController extends Controller
             abort(400, 'No file provided');
         }
 
-        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (! in_array($file->getMimeType(), $allowed, true)) {
             abort(422, 'Invalid file type');
         }

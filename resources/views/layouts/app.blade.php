@@ -53,6 +53,7 @@
                     <x-menu-item title="{{ __('cms.pages') }}" icon="o-document-text" link="/admin/pages" />
                     <x-menu-item title="{{ __('cms.categories') }}" icon="o-folder" link="/admin/categories" />
                     <x-menu-item title="Tags" icon="o-tag" link="/admin/tags" />
+                    <x-menu-item title="Comments" icon="o-chat-bubble-left" link="/admin/comments" />
                     <x-menu-item title="Settings" icon="o-cog-6-tooth" link="/admin/settings" />
                     <x-menu-separator />
 
