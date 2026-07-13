@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Pages\Auth\Login;
+use App\Livewire\Pages\Auth\Register;
 use App\Livewire\Public\BlogShow;
 use App\Models\Category;
 use App\Models\Comment;
@@ -221,12 +223,67 @@ describe('Database Models', function () {
     });
 });
 
-describe('Login & Register', function () {
-    it('renders login page without auth', function () {
-        $this->get('/login')->assertOk();
+describe('Login Form', function () {
+    it('validates required fields', function () {
+        Livewire::test(Login::class)
+            ->call('login')
+            ->assertHasErrors(['email', 'password']);
     });
 
-    it('renders register page without auth', function () {
-        $this->get('/register')->assertOk();
+    it('shows error with invalid credentials', function () {
+        Livewire::test(Login::class)
+            ->set('email', 'nobody@example.com')
+            ->set('password', 'wrong')
+            ->call('login')
+            ->assertSee('credentials do not match');
+    });
+});
+
+describe('Login via HTTP', function () {
+    it('authenticated user can access admin', function () {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/admin');
+        $response->assertStatus(200);
+    });
+});
+
+describe('Register Form', function () {
+    it('validates required fields', function () {
+        Livewire::test(Register::class)
+            ->call('register')
+            ->assertHasErrors(['name', 'email', 'password']);
+    });
+
+    it('validates unique email', function () {
+        User::factory()->create(['email' => 'taken@example.com']);
+
+        Livewire::test(Register::class)
+            ->set('name', 'Test')
+            ->set('email', 'taken@example.com')
+            ->set('password', 'Password123!')
+            ->set('password_confirmation', 'Password123!')
+            ->call('register')
+            ->assertHasErrors(['email']);
+    });
+
+    it('validates password confirmation', function () {
+        Livewire::test(Register::class)
+            ->set('name', 'Test')
+            ->set('email', 'test@example.com')
+            ->set('password', 'Password123!')
+            ->set('password_confirmation', 'different')
+            ->call('register')
+            ->assertHasErrors(['password']);
+    });
+});
+
+describe('Logout', function () {
+    it('logs out and redirects to home', function () {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/logout');
+
+        $response->assertRedirect('/');
+        $this->assertGuest();
     });
 });

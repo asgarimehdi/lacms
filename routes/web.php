@@ -1,16 +1,19 @@
 <?php
 
+use App\Livewire\Public\Homepage;
 use Illuminate\Support\Facades\Route;
 
 // Public CMS Routes — SPA with Livewire component
-Route::livewire('/', App\Livewire\Public\Homepage::class)->name('home');
+Route::livewire('/', Homepage::class)->name('home');
 
 // Public CMS Routes — no authentication required
 Route::livewire('/p/{page:slug}', 'public.page-view')->name('public.page');
 
 Route::livewire('/blog', 'public.blog-index')->name('public.posts.index');
 
-Route::livewire('/blog/{post:slug}', 'public.blog-show')->name('public.posts.show');
+Route::livewire('/blog/{post:slug}', 'public.blog-show')
+    ->middleware('throttle:3,1')
+    ->name('public.posts.show');
 
 Route::livewire('/category/{category:slug}', 'public.category-show')->name('public.categories.show');
 

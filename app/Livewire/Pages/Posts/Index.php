@@ -13,10 +13,16 @@ class Index extends Component
     use Toast;
 
     public string $search = '';
+
     public ?int $category_filter = null;
-    public bool $published_filter = false;
+
+    public bool $published__filter = false;
+
     public array $selected = [];
+
     public array $sortBy = ['column' => 'title', 'direction' => 'asc'];
+
+    private ?Collection $cachedPosts = null;
 
     public function bulkDelete(): void
     {
@@ -29,6 +35,13 @@ class Index extends Component
     {
         Post::find($id)?->delete();
         $this->success(__('cms.deleted'), position: 'toast-bottom');
+    }
+
+    public function updated(string $name): void
+    {
+        if (in_array($name, ['search', 'category_filter', 'published_filter', 'sortBy'])) {
+            $this->cachedPosts = null;
+        }
     }
 
     public function headers(): array
@@ -46,13 +59,19 @@ class Index extends Component
 
     public function posts(): Collection
     {
-        return Post::query()
+        if ($this->cachedPosts !== null) {
+            return $this->cachedPosts;
+        }
+
+        $this->cachedPosts = Post::query()
             ->with(['category', 'tags'])
-            ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
-            ->when($this->category_filter, fn($q) => $q->where('category_id', $this->category_filter))
-            ->when($this->published_filter !== null, fn($q) => $q->where('is_published', $this->published_filter))
+            ->when($this->search, fn ($q) => $q->where('title', 'like', "%{$this->search}%"))
+            ->when($this->category_filter, fn ($q) => $q->where('category_id', $this->category_filter))
+            ->when($this->published_filter !== null, fn ($q) => $q->where('is_published', $this->published_filter))
             ->orderBy(...array_values($this->sortBy))
             ->get();
+
+        return $this->cachedPosts;
     }
 
     public function with(): array
@@ -60,7 +79,7 @@ class Index extends Component
         return [
             'posts' => $this->posts(),
             'headers' => $this->headers(),
-            'categories' => Category::all()->map(fn($c) => ['id' => $c->id, 'name' => $c->name]),
+            'categories' => Category::all()->map(fn ($c) => ['id' => $c->id, 'name' => $c->name]),
         ];
     }
 
