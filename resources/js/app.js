@@ -10,17 +10,10 @@ import Embed from '@editorjs/embed';
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-editorjs]').forEach(el => {
         const inputId = el.dataset.editorjs;
-        const input = document.querySelector(`input[wire\\:model="${inputId}"]`)
+        
+        // پیدا کردن input مورد نظر
+        let targetInput = document.querySelector(`input[wire\\:model="${inputId}"]`)
             || document.querySelector(`[x-data] input[wire\\:model="${inputId}"]`)
-            || el.previousElementSibling;
-
-        if (!input || !input.name && !input.getAttribute('wire:model')) {
-            // fallback to id match
-            const byId = document.getElementById(inputId);
-            if (!byId) return;
-        }
-
-        const targetInput = document.querySelector(`input[wire\\:model="${inputId}"]`)
             || document.getElementById(inputId);
 
         if (!targetInput) return;
