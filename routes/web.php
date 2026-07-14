@@ -36,4 +36,5 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::livewire('/tags/{tag}/edit', 'pages::tags.create-edit')->name('tags.edit');
     Route::livewire('/settings', 'pages::settings.index')->name('settings');
     Route::livewire('/comments', 'pages::comments.index')->name('comments.index');
+    Route::livewire('/comments/{comment}/edit', 'pages::comments.create-edit')->name('comments.edit');
 });
