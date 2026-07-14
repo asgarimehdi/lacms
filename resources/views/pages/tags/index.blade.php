@@ -29,10 +29,18 @@ new class extends Component {
 
     public function tags(): Collection
     {
+        $allowedColumns = ['id', 'name', 'slug', 'created_at'];
+        $column = $this->sortBy['column'] ?? 'name';
+        $direction = $this->sortBy['direction'] ?? 'asc';
+        if (! in_array($column, $allowedColumns, true)) {
+            $column = 'name';
+            $direction = 'asc';
+        }
+
         return Tag::query()
             ->withCount('posts')
             ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
-            ->orderBy(...array_values($this->sortBy))
+            ->orderBy($column, $direction)
             ->get();
     }
 

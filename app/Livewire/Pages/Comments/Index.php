@@ -49,12 +49,20 @@ class Index extends Component
 
     public function comments(): Collection
     {
+        $allowedColumns = ['id', 'created_at'];
+        $column = $this->sortBy['column'] ?? 'created_at';
+        $direction = $this->sortBy['direction'] ?? 'desc';
+        if (! in_array($column, $allowedColumns, true)) {
+            $column = 'created_at';
+            $direction = 'desc';
+        }
+
         return Comment::query()
             ->with('post')
             ->when($this->filter_status === 'pending', fn ($q) => $q->where('is_approved', false))
             ->when($this->filter_status === 'approved', fn ($q) => $q->where('is_approved', true))
             ->when($this->search, fn ($q) => $q->where('author_name', 'like', "%{$this->search}%"))
-            ->orderBy(...array_values($this->sortBy))
+            ->orderBy($column, $direction)
             ->get();
     }
 
