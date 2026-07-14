@@ -7,6 +7,8 @@
     <title>{{ isset($title) ? $title.' - '.config('app.name') : config('app.name') }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js" defer></script>
 </head>
 <body class="min-h-screen font-sans antialiased bg-base-200">
 

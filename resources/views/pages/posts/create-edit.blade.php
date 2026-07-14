@@ -81,7 +81,7 @@ new class extends Component {
             <div class="mt-4">
                 <label class="label"><span class="label-text">{{ __('cms.content') }}</span></label>
                 <input type="hidden" wire:model="content" id="post-content" />
-                <div data-editorjs="post-content" class="min-h-[400px] border border-base-300 rounded-lg p-4 prose prose-sm max-w-none bg-base-100"></div>
+                <div data-quill="post-content" class="min-h-[400px]"></div>
             </div>
 
             <x-checkbox label="{{ __('cms.published') }}" wire:model="is_published" class="mt-4" />

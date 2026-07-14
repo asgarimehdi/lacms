@@ -53,15 +53,12 @@ new class extends Component {
     <x-card shadow>
         <x-form wire:submit="save">
             <x-input :label="__('cms.title')" wire:model="title" />
-            <div class="mt-4" x-data="{ ready: false }" x-init="ready = true">
+            <div class="mt-4">
                 <label class="label">
                     <span class="label-text">{{ __('cms.content') }}</span>
                 </label>
                 <input type="hidden" wire:model="content" id="page-content" />
-                <div x-show="ready" data-editorjs="page-content" class="min-h-[400px] border border-base-300 rounded-lg p-4 prose prose-sm max-w-none bg-base-100"></div>
-                <div x-show="!ready" class="min-h-[400px] border border-base-300 rounded-lg bg-base-300 animate-pulse flex items-center justify-center">
-                    <x-icon name="o-cube" class="w-12 h-12 text-base-content/20" />
-                </div>
+                <div data-quill="page-content" class="min-h-[400px]"></div>
             </div>
             <x-slot:actions>
                 <x-button :label="__('cms.save')" type="submit" icon="o-check" class="btn-primary" spinner="save" />
