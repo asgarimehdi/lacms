@@ -22,7 +22,7 @@ Route::livewire('/tag/{tag:slug}', 'public.tag-show')->name('public.tags.show');
 // Admin Routes — protected by auth middleware
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::livewire('/', 'pages::dashboard.index')->name('dashboard');
-    Route::livewire('/posts', 'pages::posts.index')->name('posts.index');
+    Route::livewire('/posts', App\Livewire\Pages\Posts\Index::class)->name('posts.index');
     Route::livewire('/posts/create', 'pages::posts.create-edit')->name('posts.create');
     Route::livewire('/posts/{post}/edit', 'pages::posts.create-edit')->name('posts.edit');
     Route::livewire('/pages', 'pages::pages.index')->name('pages.index');
