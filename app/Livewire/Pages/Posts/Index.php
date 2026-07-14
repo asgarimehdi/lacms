@@ -22,8 +22,6 @@ class Index extends Component
 
     public array $sortBy = ['column' => 'title', 'direction' => 'asc'];
 
-    private ?Collection $cachedPosts = null;
-
     public function bulkDelete(): void
     {
         Post::whereIn('id', $this->selected)->delete();
@@ -35,13 +33,6 @@ class Index extends Component
     {
         Post::find($id)?->delete();
         $this->success(__('cms.deleted'), position: 'toast-bottom');
-    }
-
-    public function updated(string $name): void
-    {
-        if (in_array($name, ['search', 'category_filter', 'published_filter', 'sortBy'])) {
-            $this->cachedPosts = null;
-        }
     }
 
     public function headers(): array
@@ -59,26 +50,21 @@ class Index extends Component
 
     public function posts(): Collection
     {
-        if ($this->cachedPosts !== null) {
-            return $this->cachedPosts;
-        }
-
         $allowedColumns = ['id', 'title', 'is_published', 'updated_at', 'created_at'];
         $column = $this->sortBy['column'] ?? 'title';
         $direction = $this->sortBy['direction'] ?? 'asc';
         if (! in_array($column, $allowedColumns, true)) {
             $column = 'title';
+            $direction = 'asc';
         }
 
-        $this->cachedPosts = Post::query()
+        return Post::query()
             ->with(['category', 'tags'])
             ->when($this->search, fn ($q) => $q->where('title', 'like', "%{$this->search}%"))
             ->when($this->category_filter, fn ($q) => $q->where('category_id', $this->category_filter))
             ->when($this->published_filter !== null, fn ($q) => $q->where('is_published', $this->published_filter))
             ->orderBy($column, $direction)
             ->get();
-
-        return $this->cachedPosts;
     }
 
     public function with(): array
